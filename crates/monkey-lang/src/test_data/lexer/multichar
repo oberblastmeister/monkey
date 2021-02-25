@@ -1,0 +1,72 @@
+[
+    Ok(
+        Token {
+            span: Span {
+                start: 0,
+                end: 2,
+            },
+            kind: ShiftLeft,
+            text: "<<",
+        },
+    ),
+    Ok(
+        Token {
+            span: Span {
+                start: 3,
+                end: 5,
+            },
+            kind: ShiftRight,
+            text: ">>",
+        },
+    ),
+    Ok(
+        Token {
+            span: Span {
+                start: 6,
+                end: 7,
+            },
+            kind: Bang,
+            text: "!",
+        },
+    ),
+    Ok(
+        Token {
+            span: Span {
+                start: 8,
+                end: 10,
+            },
+            kind: NotEq,
+            text: "!=",
+        },
+    ),
+    Ok(
+        Token {
+            span: Span {
+                start: 11,
+                end: 13,
+            },
+            kind: EqEq,
+            text: "==",
+        },
+    ),
+    Ok(
+        Token {
+            span: Span {
+                start: 14,
+                end: 15,
+            },
+            kind: Colon,
+            text: ":",
+        },
+    ),
+    Ok(
+        Token {
+            span: Span {
+                start: 16,
+                end: 18,
+            },
+            kind: Walrus,
+            text: ":=",
+        },
+    ),
+]

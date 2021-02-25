@@ -1,0 +1,62 @@
+keywords = [
+    "fn",
+
+    "let",
+
+    "true",
+    "false",
+
+    "if",
+    "else",
+
+    "return",
+]
+
+literals = [
+    "Number",
+    "String",
+]
+
+[punct]
+EqEq = "=="
+NotEq = "!="
+
+LParen = "("
+RParen = ")"
+LBrace = "{"
+RBrace = "}"
+LBracket = "["
+RBracket = "]"
+
+Colon = ":"
+Eq = "="
+Walrus = ":="
+
+Comma = ","
+Dot = "."
+Semicolon = ";"
+
+# operators
+Plus = "+"
+Minus = "-"
+Asterisk = "*"
+Slash = "/"
+Modulo = "%"
+Caret = "^"
+
+# bitwise
+ShiftLeft = "<<"
+ShiftRight = ">>"
+Tilde = "~"
+BitAnd = "&"
+BitOr = "|"
+
+Lt = "<"
+Gt = ">"
+LtEq = "<="
+GtEq = ">="
+
+# logical
+LogicalAnd = "&&"
+LogicalOr = "||"
+Bang = "!"
