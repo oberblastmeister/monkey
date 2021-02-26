@@ -5,51 +5,69 @@ use heck::{CamelCase, SnakeCase};
 use proc_macro2::{Punct, Spacing, TokenStream};
 use quote::format_ident;
 use quote::quote;
+use syn::Ident;
 use xshell::{cmd, read_file, write_file};
 
 use crate::{token_def::TokenDef, utils};
 
 impl TokenDef {
     fn gen_defs(&self) -> TokenStream {
-        let keyword_variants = self.gen_keyword_variants();
+        let imports = TokenDef::imports();
+
+        let keyword_idents = self.get_keyword_idents();
         let keyword_tt = self.gen_keyword_tt();
+        let keyword_terminals = gen_terminals(&keyword_idents);
 
-        let literal_variants = self.gen_literal_variants();
+        let literal_idents = self.get_literal_idents();
         let literal_tt = self.gen_literal_tt();
+        let literal_terminals = gen_terminals(&literal_idents);
 
-        let punct_variants = self.gen_punct_variants();
+        let punct_idents = self.get_punct_idents();
         let punct_tt = self.gen_punct_tt();
+        let punct_terminals = gen_terminals(&punct_idents);
 
         let token_stream = quote! {
+            #imports
+
             #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
             pub enum TokenKind {
-                #(#keyword_variants,)*
-                #(#literal_variants,)*
-                #(#punct_variants,)*
+                #(#keyword_idents,)*
+                #(#literal_idents,)*
+                #(#punct_idents,)*
                 Ident,
                 Eof,
             }
 
             #[macro_export]
             macro_rules! Tok {
-                #([#punct_tt] => { $crate::ast::TokenKind::#punct_variants };)*
-                #([#keyword_tt] => { $crate::ast::TokenKind::#keyword_variants};)*
-                #([#literal_tt] => { $crate::ast::TokenKind::#literal_variants};)*
+                #([#punct_tt] => { $crate::ast::TokenKind::#punct_idents };)*
+                #([#keyword_tt] => { $crate::ast::TokenKind::#keyword_idents};)*
+                #([#literal_tt] => { $crate::ast::TokenKind::#literal_idents};)*
                 [ident] => { $crate::ast::TokenKind::Ident };
                 [eof] => { $crate::ast::TokenKind::Eof };
             }
+
+            #(#literal_terminals)*
+            #(#punct_terminals)*
+            #(#keyword_terminals)*
         };
 
         token_stream
     }
 
-    fn gen_keyword_variants(&self) -> Vec<TokenStream> {
+    fn imports() -> TokenStream {
+        quote! {
+            use crate::parsing;
+            use super::Token;
+        }
+    }
+
+    fn get_keyword_idents(&self) -> Vec<Ident> {
         self.keywords
             .iter()
             .map(|kw| {
                 let kw = kw.to_camel_case();
-                let kw_ident = format_ident!("Kw{}", kw);
-                quote! { #kw_ident }
+                format_ident!("Kw{}", kw)
             })
             .collect()
     }
@@ -64,13 +82,10 @@ impl TokenDef {
             .collect()
     }
 
-    fn gen_literal_variants(&self) -> Vec<TokenStream> {
+    fn get_literal_idents(&self) -> Vec<Ident> {
         self.literals
             .iter()
-            .map(|lit| {
-                let lit_ident = format_ident!("{}", lit);
-                quote! { #lit_ident }
-            })
+            .map(|lit| format_ident!("{}", lit))
             .collect()
     }
 
@@ -85,13 +100,10 @@ impl TokenDef {
             .collect()
     }
 
-    fn gen_punct_variants(&self) -> Vec<TokenStream> {
+    fn get_punct_idents(&self) -> Vec<Ident> {
         self.punct
             .keys()
-            .map(|variant| {
-                let variant_ident = format_ident!("{}", variant);
-                quote! { #variant_ident }
-            })
+            .map(|variant| format_ident!("{}", variant))
             .collect()
     }
 
@@ -111,13 +123,13 @@ impl TokenDef {
     }
 }
 
-fn variants_to_terminals(variants: Vec<TokenStream>) -> TokenStream {
-    variants
+fn gen_terminals(idents: &[Ident]) -> Vec<TokenStream> {
+    idents
         .iter()
         .map(|variant| {
             quote! {
                 pub struct #variant {
-                    pub token: ast::Token,
+                    pub token: Token,
                 }
 
                 impl parsing::Parse for #variant {
@@ -125,7 +137,7 @@ fn variants_to_terminals(variants: Vec<TokenStream>) -> TokenStream {
                         let token = p.next()?;
 
                         match token.kind {
-                            ast::TokenKind::#variant => Ok(Self { token }),
+                            TokenKind::#variant => Ok(Self { token }),
                             _ => Err(parsing::ParseError::expected(&token, "abstract")),
                         }
                     }

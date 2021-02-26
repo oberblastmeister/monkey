@@ -2,7 +2,7 @@ use std::collections::VecDeque;
 
 use crate::{Span};
 use crate::ast::Token;
-use super::{Lexer, ParseError};
+use super::{Lexer, ParseError, ParseResult};
 
 /// Construct used to peek a parser.
 #[derive(Debug)]
@@ -16,6 +16,12 @@ pub struct Peeker<'a> {
 }
 
 #[derive(Debug)]
-pub struct Parser {
+pub struct Parser<'a> {
+    peeker: Peeker<'a>,
+}
 
+impl<'a> Parser<'a> {
+    fn next() -> ParseResult<()> {
+        Ok(())
+    }
 }

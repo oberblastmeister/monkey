@@ -1,6 +1,6 @@
 ---
 source: crates/monkey-lang/src/parsing/lexer.rs
-expression: actual_tokens
+expression: "Lexer::new(&input).lex_until_eof()"
 
 ---
 [

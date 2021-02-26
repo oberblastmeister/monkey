@@ -1,3 +1,5 @@
+//! Inspired by rustc_lexer and Rob Pike lexer
+
 #![allow(clippy::unnecessary_wraps)]
 
 use smol_str::SmolStr;
@@ -274,6 +276,7 @@ fn keyword(text: &str) -> Option<TokenKind> {
     })
 }
 
+/// Taken from rustc_lexer
 /// True if `c` is considered a whitespace according to Rust language definition.
 /// See [Rust language reference](https://doc.rust-lang.org/reference/whitespace.html)
 /// for definitions of these classes.
@@ -316,10 +319,9 @@ mod tests {
     fn lexer() {
         insta::glob!("snapshot_inputs/lexer/*.txt", |path| {
             let input = fs::read_to_string(path).unwrap();
-            let actual_tokens = Lexer::new(&input).lex_until_eof();
             let suffix = path.file_stem().unwrap().to_str().unwrap();
             insta::with_settings!({snapshot_path => "snapshots/lexer", snapshot_suffix => suffix}, {
-                insta::assert_debug_snapshot!(actual_tokens)
+                insta::assert_debug_snapshot!(Lexer::new(&input).lex_until_eof())
             })
         })
     }

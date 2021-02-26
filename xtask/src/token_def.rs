@@ -1,4 +1,4 @@
-use std::collections::HashMap;
+use std::collections::BTreeMap;
 
 use serde::{Serialize, Deserialize};
 use xshell::read_file;
@@ -10,7 +10,7 @@ use crate::utils;
 pub struct TokenDef {
     pub keywords: Vec<String>,
     pub literals: Vec<String>,
-    pub punct: HashMap<String, String>,
+    pub punct: BTreeMap<String, String>,
 }
 
 impl TokenDef {
