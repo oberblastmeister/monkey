@@ -1,4 +1,7 @@
+#![allow(clippy::unnecessary_wraps)]
+
 use smol_str::SmolStr;
+use unicode_xid::UnicodeXID;
 
 use super::{ParseError, ParseResult, ToEof};
 use crate::ast::{Token, TokenKind};
@@ -199,8 +202,11 @@ impl<'a> Lexer<'a> {
 
             // special
             _ if is_whitespace(next_char) => return self.whitespace(),
-            _ if is_ident_start(next_char) => return self.ident(),
-            _ => return Err(ParseError::Unknown),
+            _ if next_char.is_xid_start() => return self.maybe_ident(),
+            _ => {
+                self.source.bump_pos();
+                return Err(ParseError::Unknown);
+            }
         };
 
         let (span, text) = self.source.bump();
@@ -234,21 +240,38 @@ impl<'a> Lexer<'a> {
             span,
             text,
             kind: Tok![string],
-
         })
     }
 
     fn number_lit(&mut self) -> ParseResult<Token> {
-        todo!()
+        self.source
+            .accept_while(|c| ('0'..'9').contains(&c) || c == '_');
+        let (span, text) = self.source.bump();
+        Ok(Token {
+            span,
+            text,
+            kind: Tok![number],
+        })
     }
 
-    fn ident(&mut self) -> ParseResult<Token> {
-        todo!()
+    fn maybe_ident(&mut self) -> ParseResult<Token> {
+        self.source.accept_while(UnicodeXID::is_xid_continue);
+        let (span, text) = self.source.bump();
+        let kind = keyword(&text).unwrap_or(Tok![ident]);
+        Ok(Token { span, text, kind })
     }
 }
 
-pub fn is_ident_start(c: char) -> bool {
-    ('a'..='z').contains(&c) || ('A'..'Z').contains(&c) || c == '_'
+fn keyword(text: &str) -> Option<TokenKind> {
+    Some(match text {
+        "let" => Tok![let],
+        "return" => Tok![return],
+        "if" => Tok![if],
+        "else" => Tok![else],
+        "true" => Tok![true],
+        "false" => Tok![false],
+        _ => return None,
+    })
 }
 
 /// True if `c` is considered a whitespace according to Rust language definition.
@@ -285,17 +308,20 @@ pub fn is_whitespace(c: char) -> bool {
 
 #[cfg(test)]
 mod tests {
-    use std::path::Path;
-
-    use expect_test::{expect_file, ExpectFile};
-
     use super::*;
-    use crate::tests::data_path;
 
-    fn check(actual: &str, file_name: impl AsRef<Path>) {
-        let path = data_path().join("lexer").join(file_name);
-        let actual_tokens = Lexer::new(actual).lex_until_eof();
-        expect_file![path].assert_debug_eq(&actual_tokens)
+    use std::fs;
+
+    #[test]
+    fn lexer() {
+        insta::glob!("snapshot_inputs/lexer/*.txt", |path| {
+            let input = fs::read_to_string(path).unwrap();
+            let actual_tokens = Lexer::new(&input).lex_until_eof();
+            let suffix = path.file_stem().unwrap().to_str().unwrap();
+            insta::with_settings!({snapshot_path => "snapshots/lexer", snapshot_suffix => suffix}, {
+                insta::assert_debug_snapshot!(actual_tokens)
+            })
+        })
     }
 
     #[test]
@@ -317,31 +343,6 @@ mod tests {
     }
 
     #[test]
-    fn delimiters() {
-        check("(){}[]", "delimiters")
-    }
-
-    #[test]
-    fn punct() {
-        check(";,.: =", "punct")
-    }
-
-    #[test]
-    fn multi_char() {
-        check("<< >> ! != == : :=", "multichar")
-    }
-
-    #[test]
-    fn comments() {
-        check(
-            r"// this is just a comment
->> = ;
-// this is another comment",
-            "comments",
-        );
-    }
-
-    #[test]
     fn nothing() {
         assert!(Lexer::new("").lex_until_eof().is_empty());
     }
@@ -351,35 +352,5 @@ mod tests {
         assert!(Lexer::new("\t\t\n              \t\n")
             .lex_until_eof()
             .is_empty());
-    }
-
-    #[test]
-    fn operators() {
-        check("* % + - ~ > < ! /", "operators");
-    }
-
-    #[test]
-    fn ident() {
-        check("hello + another", "ident");
-    }
-
-    #[test]
-    fn keyword() {
-        check("let var = ; return if then", "keywords");
-    }
-
-    #[test]
-    fn bool_lit() {
-        check("true; false;", "bool");
-    }
-
-    #[test]
-    fn numbers() {
-        check("let num = 14323;", "num");
-    }
-
-    #[test]
-    fn string() {
-        check(r#"let s = "long string";"#, "string");
     }
 }

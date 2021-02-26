@@ -26,6 +26,7 @@ impl TokenDef {
                 #(#keyword_variants,)*
                 #(#literal_variants,)*
                 #(#punct_variants,)*
+                Ident,
                 Eof,
             }
 
@@ -34,7 +35,8 @@ impl TokenDef {
                 #([#punct_tt] => { $crate::ast::TokenKind::#punct_variants };)*
                 #([#keyword_tt] => { $crate::ast::TokenKind::#keyword_variants};)*
                 #([#literal_tt] => { $crate::ast::TokenKind::#literal_variants};)*
-                [eof] => { $crate::ast::TokenKind::Eof; }
+                [ident] => { $crate::ast::TokenKind::Ident };
+                [eof] => { $crate::ast::TokenKind::Eof };
             }
         };
 

@@ -1,0 +1,32 @@
+[
+    Ok(
+        Token {
+            span: Span {
+                start: 0,
+                end: 11,
+            },
+            kind: Ident,
+            text: "first_ident",
+        },
+    ),
+    Ok(
+        Token {
+            span: Span {
+                start: 12,
+                end: 13,
+            },
+            kind: Plus,
+            text: "+",
+        },
+    ),
+    Ok(
+        Token {
+            span: Span {
+                start: 14,
+                end: 27,
+            },
+            kind: Ident,
+            text: "another_ident",
+        },
+    ),
+]

@@ -9,6 +9,7 @@ edition = "2018"
 [dependencies]
 smol_str = "0.1.17"
 thiserror = "1.0.24"
+unicode-xid = "0.2.1"
 
 [dev-dependencies]
-expect-test = "1.1.0"
+insta = { version = "1.6.3", features = ["glob"] }
