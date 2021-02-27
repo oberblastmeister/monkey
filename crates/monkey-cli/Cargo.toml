@@ -11,5 +11,7 @@ name = "monkey"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-clap = "2.33.3"
+clap = "3.0.0-beta.2"
 rustyline = "7.1.0"
+monkey-lang = { path = "../monkey-lang" }
+directories-next = "2.0.0"

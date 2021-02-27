@@ -102,6 +102,10 @@ pub struct Lexer<'a> {
     source: Source<'a>,
 }
 
+pub fn lex(input: &str) -> Vec<ParseResult<Token>> {
+    Lexer::new(input).lex_until_eof()
+}
+
 impl<'a> Lexer<'a> {
     fn new(input: &'a str) -> Lexer<'a> {
         Lexer {
@@ -216,7 +220,6 @@ impl<'a> Lexer<'a> {
         Ok(Token { span, kind, text })
     }
 
-    #[cfg(test)]
     fn lex_until_eof(&mut self) -> Vec<ParseResult<Token>> {
         let mut results = Vec::new();
 
@@ -321,7 +324,7 @@ mod tests {
             let input = fs::read_to_string(path).unwrap();
             let suffix = path.file_stem().unwrap().to_str().unwrap();
             insta::with_settings!({snapshot_path => "snapshots/lexer", snapshot_suffix => suffix}, {
-                insta::assert_debug_snapshot!(Lexer::new(&input).lex_until_eof())
+                insta::assert_debug_snapshot!(lex(&input))
             })
         })
     }
