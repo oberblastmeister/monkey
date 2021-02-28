@@ -6,7 +6,7 @@ pub type ParseResult<T, E = ParseError> = Result<T, E>;
 
 #[derive(Error, Debug, PartialEq, Eq, Clone)]
 pub enum ParseError {
-    #[error("BUG: Should not be displayed, this is just a marker error")]
+    #[error("Unexpected eof")]
     Eof,
 
     #[error("Unknown type")]

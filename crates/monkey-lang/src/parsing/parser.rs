@@ -22,9 +22,7 @@ impl<'a> Peeker<'a> {
                 Some(t) => t.kind,
                 None => TokenKind::Eof,
             },
-            Err(error) => {
-                TokenKind::Error
-            }
+            Err(error) => TokenKind::Error,
         }
     }
 
@@ -68,7 +66,43 @@ impl<'a> Parser<'a> {
         Ok(result)
     }
 
-    pub fn next(&mut self) -> ParseResult<Token> {
-        todo!()
+    /// Try to consume a single thing matching `T`, returns `true` if any tokens
+    /// were consumed.
+    pub fn try_consume<T>(&mut self) -> Result<bool, ParseError>
+    where
+        T: Parse + Peek,
+    {
+        Ok(if self.peek::<T>()? {
+            self.parse::<T>()?;
+            true
+        } else {
+            false
+        })
+    }
+
+    /// Try to consume all things matching `T`, returns `true` if any tokens
+    /// were consumed.
+    pub fn try_consume_all<T>(&mut self) -> Result<bool, ParseError>
+    where
+        T: Parse + Peek,
+    {
+        let mut consumed = false;
+
+        while self.peek::<T>()? {
+            self.parse::<T>()?;
+            consumed = true;
+        }
+
+        Ok(consumed)
+    }
+
+    /// Consume the next token from the parser.
+    #[allow(clippy::should_implement_trait)]
+    pub fn next(&mut self) -> Result<Token, ParseError> {
+        if let Some(t) = self.peeker.buf.pop_front() {
+            return Ok(t);
+        }
+
+        Ok(self.peeker.lexer.next_token()?)
     }
 }
