@@ -50,6 +50,7 @@ impl TokenDefs {
                 )*
                 Ident,
                 Eof,
+                Error,
             }
 
             /// A helper macro to get the token kind
@@ -94,6 +95,7 @@ impl TokenDefs {
                     #(#arms,)*
                     Self::Ident => "ident",
                     Self::Eof => "eof",
+                    Self::Error => "error",
                 }
             }
         }

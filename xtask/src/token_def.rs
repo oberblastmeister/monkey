@@ -1,5 +1,3 @@
-use std::collections::BTreeMap;
-
 use serde::{Serialize, Deserialize};
 use xshell::read_file;
 use eyre::Result;

@@ -117,7 +117,7 @@ impl<'a> Lexer<'a> {
         self.source.peek().ok_or(ParseError::Eof)
     }
 
-    fn next_token(&mut self) -> ParseResult<Token> {
+    pub fn next_token(&mut self) -> ParseResult<Token> {
         let next_char = self.source.next().eof()?;
         let peek_char = self.source.peek();
 

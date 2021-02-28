@@ -8,16 +8,41 @@ use crate::Span;
 #[derive(Debug)]
 pub struct Peeker<'a> {
     pub(crate) lexer: Lexer<'a>,
+
     buf: VecDeque<Token>,
-    // NB: parse errors encountered during peeking.
-    error: Option<ParseError>,
-    /// The last span we encountered. Used to provide better EOF diagnostics.
+
     last: Option<Span>,
 }
 
 impl<'a> Peeker<'a> {
+    /// Peek the token kind at the given position.
     pub fn nth(&mut self, n: usize) -> TokenKind {
-        todo!()
+        match self.at(n) {
+            Ok(t) => match t {
+                Some(t) => t.kind,
+                None => TokenKind::Eof,
+            },
+            Err(error) => {
+                TokenKind::Error
+            }
+        }
+    }
+
+    /// Make sure there are at least `n` items in the buffer, and return the
+    /// item at that point.
+    fn at(&mut self, n: usize) -> ParseResult<Option<&Token>> {
+        while self.buf.len() <= n {
+            let token = match self.lexer.next_token() {
+                Ok(token) => token,
+                Err(ParseError::Eof) => break,
+                Err(e) => return Err(e),
+            };
+
+            self.last = Some(token.span);
+            self.buf.push_back(token);
+        }
+
+        Ok(self.buf.get(n))
     }
 }
 

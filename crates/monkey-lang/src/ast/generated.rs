@@ -71,6 +71,7 @@ pub enum TokenKind {
     Bang,
     Ident,
     Eof,
+    Error,
 }
 #[doc = r" A helper macro to get the token kind"]
 #[macro_export]
@@ -122,6 +123,7 @@ impl TokenKind {
             Self::Bang => "!",
             Self::Ident => "ident",
             Self::Eof => "eof",
+            Self::Error => "error",
         }
     }
 }
