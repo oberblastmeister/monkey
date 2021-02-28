@@ -1,154 +1,220 @@
-use std::path::Path;
+use std::{ops::Deref, path::Path};
 
 use eyre::Result;
 use heck::{CamelCase, SnakeCase};
 use proc_macro2::{Punct, Spacing, TokenStream};
-use quote::format_ident;
 use quote::quote;
+use quote::{format_ident, ToTokens};
 use syn::Ident;
 use xshell::{cmd, read_file, write_file};
 
-use crate::{token_def::TokenDef, utils};
+use crate::{
+    token_def::{TokenDef, TokenDefs, TokenType},
+    utils,
+};
 
-impl TokenDef {
+impl TokenDefs {
     fn gen_defs(&self) -> TokenStream {
-        let imports = TokenDef::imports();
+        let token_gens = self
+            .tokens
+            .iter()
+            .map(|v| v.get_token_gen())
+            .collect::<Vec<_>>();
 
-        let keyword_idents = self.get_keyword_idents();
-        let keyword_tt = self.gen_keyword_tt();
-        let keyword_terminals = gen_terminals(&keyword_idents);
+        let tts: Vec<_> = token_gens.iter().map(|gen| &gen.tt).collect();
 
-        let literal_idents = self.get_literal_idents();
-        let literal_tt = self.gen_literal_tt();
-        let literal_terminals = gen_terminals(&literal_idents);
+        let docs: Vec<_> = token_gens.iter().map(|gen| &gen.doc).collect();
 
-        let punct_idents = self.get_punct_idents();
-        let punct_tt = self.gen_punct_tt();
-        let punct_terminals = gen_terminals(&punct_idents);
+        let variants: Vec<_> = token_gens
+            .iter()
+            .map(|gen| {
+                let variant = &gen.variant;
+                quote! { #variant }
+            })
+            .collect();
+
+        let terminals: Vec<_> = token_gens.iter().map(|gen| gen.gen_terminal()).collect();
+
+        let imports = TokenDefs::imports();
+
+        let as_str_fn = TokenDefs::gen_as_str(&token_gens);
 
         let token_stream = quote! {
             #imports
 
             #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
             pub enum TokenKind {
-                #(#keyword_idents,)*
-                #(#literal_idents,)*
-                #(#punct_idents,)*
+                #(
+                    #docs
+                    #variants,
+                )*
                 Ident,
                 Eof,
             }
 
+            /// A helper macro to get the token kind
             #[macro_export]
-            macro_rules! Tok {
-                #([#punct_tt] => { $crate::ast::TokenKind::#punct_idents };)*
-                #([#keyword_tt] => { $crate::ast::TokenKind::#keyword_idents};)*
-                #([#literal_tt] => { $crate::ast::TokenKind::#literal_idents};)*
+            macro_rules! K {
+                #([#tts] => { $crate::ast::TokenKind::#variants };)*
                 [ident] => { $crate::ast::TokenKind::Ident };
                 [eof] => { $crate::ast::TokenKind::Eof };
             }
 
-            #(#literal_terminals)*
-            #(#punct_terminals)*
-            #(#keyword_terminals)*
+            impl TokenKind {
+                #as_str_fn
+            }
+
+            impl fmt::Display for TokenKind {
+                fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+                    f.write_str(self.as_str())
+                }
+            }
+
+            #(#terminals)*
         };
 
         token_stream
+    }
+
+    fn gen_as_str(token_gens: &[TokenGen]) -> TokenStream {
+        let arms = token_gens.iter().map(|TokenGen { text, variant, .. }| {
+            let text = text
+                .clone()
+                .unwrap_or_else(|| variant.to_string().to_snake_case());
+
+            quote! {
+                Self::#variant => #text
+            }
+        });
+
+        quote! {
+            /// Get the display of the TokenKind
+            fn as_str(&self) -> &'static str {
+                match self {
+                    #(#arms,)*
+                    Self::Ident => "ident",
+                    Self::Eof => "eof",
+                }
+            }
+        }
     }
 
     fn imports() -> TokenStream {
         quote! {
             use crate::parsing;
             use super::Token;
+            use std::fmt;
         }
     }
+}
 
-    fn get_keyword_idents(&self) -> Vec<Ident> {
-        self.keywords
-            .iter()
-            .map(|kw| {
-                let kw = kw.to_camel_case();
-                format_ident!("Kw{}", kw)
-            })
-            .collect()
-    }
+impl TokenDef {
+    fn get_token_gen(&self) -> TokenGen {
+        let doc = MaybeQuote(self.doc.clone().map(|s| quote! { #[doc = #s] }));
 
-    fn gen_keyword_tt(&self) -> Vec<TokenStream> {
-        self.keywords
-            .iter()
-            .map(|kw| {
-                let kw_ident = format_ident!("{}", kw);
-                quote! { #kw_ident }
-            })
-            .collect()
-    }
-
-    fn get_literal_idents(&self) -> Vec<Ident> {
-        self.literals
-            .iter()
-            .map(|lit| format_ident!("{}", lit))
-            .collect()
-    }
-
-    fn gen_literal_tt(&self) -> Vec<TokenStream> {
-        self.literals
-            .iter()
-            .map(|lit| {
-                let lit = lit.to_snake_case();
-                let lit_ident = format_ident!("{}", lit);
-                quote! { #lit_ident }
-            })
-            .collect()
-    }
-
-    fn get_punct_idents(&self) -> Vec<Ident> {
-        self.punct
-            .keys()
-            .map(|variant| format_ident!("{}", variant))
-            .collect()
-    }
-
-    fn gen_punct_tt(&self) -> Vec<TokenStream> {
-        self.punct
-            .values()
-            .map(|text| {
-                if "{}[]()".contains(text) {
+        match self.ttype {
+            TokenType::Keyword => {
+                let text = self.text.clone().unwrap();
+                let tt = format_ident!("{}", &text);
+                let variant_s = self
+                    .variant
+                    .clone()
+                    .unwrap_or_else(|| format!("{}Kw", text.to_camel_case()));
+                let variant = format_ident!("{}", variant_s);
+                TokenGen {
+                    text: Some(text),
+                    tt: quote! { #tt },
+                    variant,
+                    doc,
+                }
+            }
+            TokenType::Literal => {
+                let tt = format_ident!("{}", self.variant.as_ref().unwrap().to_snake_case());
+                let variant = format_ident!("{}", self.variant.as_ref().unwrap());
+                TokenGen {
+                    text: None,
+                    tt: quote! { #tt },
+                    variant,
+                    doc,
+                }
+            }
+            TokenType::Punct => {
+                let text = self.text.clone().unwrap();
+                let tt = if "{}[]()".contains(&text) {
                     let c = text.chars().next().unwrap();
                     quote! { #c }
                 } else {
                     let cs = text.chars().map(|c| Punct::new(c, Spacing::Joint));
                     quote! { #(#cs)* }
+                };
+                let variant = format_ident!("{}", self.variant.as_ref().unwrap());
+                TokenGen {
+                    text: Some(text),
+                    tt,
+                    variant,
+                    doc,
                 }
-            })
-            .collect()
+            }
+        }
     }
 }
 
-fn gen_terminals(idents: &[Ident]) -> Vec<TokenStream> {
-    idents
-        .iter()
-        .map(|variant| {
+struct TokenGen {
+    text: Option<String>,
+    tt: TokenStream,
+    doc: MaybeQuote,
+    variant: Ident,
+}
+
+impl TokenGen {
+    fn gen_terminal(&self) -> TokenStream {
+        let variant = &self.variant;
+
+        let text = self.text.as_ref().map(|s| match s.deref() {
+            "{" => "{{",
+            "}" => "}}",
+            _ => s,
+        });
+
+        let display_impl = text.map(|s| {
             quote! {
-                pub struct #variant {
-                    pub token: Token,
-                }
-
-                impl parsing::Parse for #variant {
-                    fn parse(p: &mut parsing::Parser<'_>) -> Result<Self, parsing::ParseError> {
-                        let token = p.next()?;
-
-                        match token.kind {
-                            TokenKind::#variant => Ok(Self { token }),
-                            _ => Err(parsing::ParseError::expected(&token, "abstract")),
-                        }
+                impl fmt::Display for #variant {
+                    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+                        write!(f, #s)
                     }
                 }
             }
-        })
-        .collect()
+        });
+
+        quote! {
+            pub struct #variant {
+                pub token: Token,
+            }
+
+            impl parsing::Parse for #variant {
+                fn parse(p: &mut parsing::Parser<'_>) -> Result<Self, parsing::ParseError> {
+                    let token = p.next()?;
+
+                    match token.kind {
+                        TokenKind::#variant => Ok(Self { token }),
+                        _ => Err(parsing::ParseError::expected(&token, "abstract")),
+                    }
+                }
+            }
+
+            impl parsing::Peek for #variant {
+                fn peek(peeker: &mut parsing::Peeker<'_>) -> bool {
+                    matches!(peeker.nth(0), TokenKind::#variant)
+                }
+            }
+
+            #display_impl
+        }
+    }
 }
 
 pub fn run() -> Result<()> {
-    let tokendef = TokenDef::get()?;
+    let tokendef = TokenDefs::get()?;
     let s = reformat(&tokendef.gen_defs().to_string())?;
     let path = utils::project_root().join("crates/monkey-lang/src/ast/generated.rs");
     update(&path, &s)?;
@@ -179,4 +245,17 @@ pub const PREAMBLE: &str = "Generated file, do not edit by hand, see `xtask/src/
 pub fn reformat(text: &str) -> Result<String> {
     let stdout = cmd!("rustfmt").stdin(text).read()?;
     Ok(format!("//! {}\n\n{}\n", PREAMBLE, stdout))
+}
+
+/// Represent optional quoting, just a newtype wrapper around option
+#[derive(Debug, Clone)]
+pub struct MaybeQuote(pub Option<TokenStream>);
+
+impl ToTokens for MaybeQuote {
+    fn to_tokens(&self, tokens: &mut TokenStream) {
+        match &self.0 {
+            Some(new_tokens) => tokens.extend(new_tokens.clone()),
+            None => (),
+        }
+    }
 }

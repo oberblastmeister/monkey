@@ -1,62 +1,223 @@
-keywords = [
-    "fn",
+# keywords
+[[tokens]]
+text = "fn"
+ttype = "Keyword"
+doc = "fn keyword"
 
-    "let",
+[[tokens]]
+text = "let"
+ttype = "Keyword"
+doc = "let keyword"
 
-    "true",
-    "false",
+[[tokens]]
+text = "true"
+ttype = "Keyword"
+doc = "true keyword"
 
-    "if",
-    "else",
+[[tokens]]
+text = "false"
+ttype = "Keyword"
+doc = "false keyword"
 
-    "return",
-]
+[[tokens]]
+text = "if"
+ttype = "Keyword"
+doc = "if keyword"
 
-literals = [
-    "Number",
-    "String",
-]
+[[tokens]]
+text = "else"
+ttype = "Keyword"
+doc = "else keyword"
 
-[punct]
-EqEq = "=="
-NotEq = "!="
+[[tokens]]
+text = "return"
+ttype = "Keyword"
+doc = "return keyword"
 
-LParen = "("
-RParen = ")"
-LBrace = "{"
-RBrace = "}"
-LBracket = "["
-RBracket = "]"
+# # literals
+[[tokens]]
+variant = "Number"
+ttype = "Literal"
+doc = "number literal"
 
-Colon = ":"
-Eq = "="
-Walrus = ":="
+[[tokens]]
+variant = "String"
+ttype = "Literal"
+doc = "string literal"
 
-Comma = ","
-Dot = "."
-Semicolon = ";"
+[[tokens]]
+variant = "EqEq" 
+text = "=="
+ttype = "Punct"
+doc = "equality operator"
+
+[[tokens]]
+variant = "NotEq" 
+text = "!="
+ttype = "Punct"
+doc = "inequality operator"
+
+[[tokens]]
+variant = "LParen" 
+text = "("
+ttype = "Punct"
+doc = "left parenthesis delimiter"
+
+[[tokens]]
+variant = "RParen" 
+text = ")"
+ttype = "Punct"
+doc = "right parenthesis delimiter"
+
+[[tokens]]
+variant = "LBrace" 
+text = "{"
+ttype = "Punct"
+doc = "left brace delimiter"
+
+[[tokens]]
+variant = "RBrace" 
+text = "}"
+ttype = "Punct"
+doc = "right brace delimiter"
+
+[[tokens]]
+variant = "LBracket" 
+text = "["
+ttype = "Punct"
+doc = "left bracket delimiter"
+
+[[tokens]]
+variant = "RBracket" 
+text = "]"
+ttype = "Punct"
+doc = "right bracket delimiter"
+
+[[tokens]]
+variant = "Colon" 
+text = ":"
+ttype = "Punct"
+doc = "colon punctuation"
+
+[[tokens]]
+variant = "Eq" 
+text = "="
+ttype = "Punct"
+doc = "assignment operator"
+
+[[tokens]]
+variant = "Walrus" 
+text = ":="
+ttype = "Punct"
+doc = "walrus operator"
+
+[[tokens]]
+variant = "Comma" 
+text = ","
+ttype = "Punct"
+doc = "comma puncuation"
+
+[[tokens]]
+variant = "Dot" 
+text = "."
+ttype = "Punct"
+doc = "dot puncuation"
+
+[[tokens]]
+variant = "Semicolon" 
+text = ";"
+ttype = "Punct"
+doc = "semicolon punctuation"
 
 # operators
-Plus = "+"
-Minus = "-"
-Asterisk = "*"
-Slash = "/"
-Modulo = "%"
-Caret = "^"
+[[tokens]]
+variant = "Plus" 
+text = "+"
+ttype = "Punct"
+
+[[tokens]]
+variant = "Minus" 
+text = "-"
+ttype = "Punct"
+
+[[tokens]]
+variant = "Asterisk" 
+text = "*"
+ttype = "Punct"
+
+[[tokens]]
+variant = "Slash" 
+text = "/"
+ttype = "Punct"
+
+[[tokens]]
+variant = "Modulo" 
+text = "%"
+ttype = "Punct"
+
+[[tokens]]
+variant = "Caret" 
+text = "^"
+ttype = "Punct"
 
 # bitwise
-ShiftLeft = "<<"
-ShiftRight = ">>"
-Tilde = "~"
-BitAnd = "&"
-BitOr = "|"
+[[tokens]]
+variant = "ShiftLeft" 
+text = "<<"
+ttype = "Punct"
 
-Lt = "<"
-Gt = ">"
-LtEq = "<="
-GtEq = ">="
+[[tokens]]
+variant = "ShiftRight" 
+text = ">>"
+ttype = "Punct"
+
+[[tokens]]
+variant = "Tilde" 
+text = "~"
+ttype = "Punct"
+
+[[tokens]]
+variant = "BitAnd" 
+text = "&"
+ttype = "Punct"
+
+[[tokens]]
+variant = "BitOr" 
+text = "|"
+ttype = "Punct"
+
+[[tokens]]
+variant = "Lt" 
+text = "<"
+ttype = "Punct"
+
+[[tokens]]
+variant = "Gt" 
+text = ">"
+ttype = "Punct"
+
+[[tokens]]
+variant = "LtEq" 
+text = "<="
+ttype = "Punct"
+
+[[tokens]]
+variant = "GtEq" 
+text = ">="
+ttype = "Punct"
 
 # logical
-LogicalAnd = "&&"
-LogicalOr = "||"
-Bang = "!"
+[[tokens]]
+variant = "LogicalAnd" 
+text = "&&"
+ttype = "Punct"
+
+[[tokens]]
+variant = "LogicalOr" 
+text = "||"
+ttype = "Punct"
+
+[[tokens]]
+variant = "Bang" 
+text = "!"
+ttype = "Punct"

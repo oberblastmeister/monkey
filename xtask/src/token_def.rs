@@ -7,14 +7,27 @@ use eyre::Result;
 use crate::utils;
 
 #[derive(Debug, Serialize, Deserialize)]
-pub struct TokenDef {
-    pub keywords: Vec<String>,
-    pub literals: Vec<String>,
-    pub punct: BTreeMap<String, String>,
+pub struct TokenDefs {
+    pub tokens: Vec<TokenDef>
 }
 
-impl TokenDef {
-    pub fn get() -> Result<TokenDef> {
+#[derive(Debug, Serialize, Deserialize)]
+pub struct TokenDef {
+    pub variant: Option<String>,
+    pub text: Option<String>,
+    pub ttype: TokenType,
+    pub doc: Option<String>,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub enum TokenType {
+    Keyword,
+    Literal,
+    Punct,
+}
+
+impl TokenDefs {
+    pub fn get() -> Result<TokenDefs> {
         let path = utils::xtask_root().join("assets/token_def.toml");
         let contents = read_file(path)?;
 

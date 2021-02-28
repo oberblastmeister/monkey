@@ -130,77 +130,77 @@ impl<'a> Lexer<'a> {
                 }
                 _ => {
                     self.source.next();
-                    Tok![/]
+                    K![/]
                 }
             },
 
             '=' => match peek_char {
                 Some('=') => {
                     self.source.next();
-                    Tok![==]
+                    K![==]
                 }
-                _ => Tok![=],
+                _ => K![=],
             },
 
             '!' => match peek_char {
                 Some('=') => {
                     self.source.next();
-                    Tok![!=]
+                    K![!=]
                 }
-                _ => Tok![!],
+                _ => K![!],
             },
 
             '<' => match peek_char {
                 Some('<') => {
                     self.source.next();
-                    Tok![<<]
+                    K![<<]
                 }
                 Some('=') => {
                     self.source.next();
-                    Tok![<=]
+                    K![<=]
                 }
-                _ => Tok![<],
+                _ => K![<],
             },
 
             '>' => match peek_char {
                 Some('>') => {
                     self.source.next();
-                    Tok![>>]
+                    K![>>]
                 }
                 Some('=') => {
                     self.source.next();
-                    Tok![>=]
+                    K![>=]
                 }
-                _ => Tok![>],
+                _ => K![>],
             },
 
             ':' => match peek_char {
                 Some('=') => {
                     self.source.next();
-                    Tok![:=]
+                    K![:=]
                 }
                 _ => {
-                    Tok![:]
+                    K![:]
                 }
             },
 
-            ';' => Tok![;],
-            ',' => Tok![,],
-            '.' => Tok![.],
+            ';' => K![;],
+            ',' => K![,],
+            '.' => K![.],
 
-            '(' => Tok!['('],
-            ')' => Tok![')'],
-            '[' => Tok!['['],
-            ']' => Tok![']'],
-            '{' => Tok!['{'],
-            '}' => Tok!['}'],
+            '(' => K!['('],
+            ')' => K![')'],
+            '[' => K!['['],
+            ']' => K![']'],
+            '{' => K!['{'],
+            '}' => K!['}'],
 
             // operators
-            '*' => Tok![*],
-            '%' => Tok![%],
-            '+' => Tok![+],
-            '-' => Tok![-],
-            '~' => Tok![~],
+            '*' => K![*],
+            '%' => K![%],
+            '+' => K![+],
+            '-' => K![-],
+            '~' => K![~],
 
             // literals
             '"' => return self.string_lit(),
@@ -244,7 +244,7 @@ impl<'a> Lexer<'a> {
         Ok(Token {
             span,
             text,
-            kind: Tok![string],
+            kind: K![string],
         })
     }
 
@@ -255,26 +255,26 @@ impl<'a> Lexer<'a> {
         Ok(Token {
             span,
             text,
-            kind: Tok![number],
+            kind: K![number],
         })
     }
 
     fn maybe_ident(&mut self) -> ParseResult<Token> {
         self.source.accept_while(UnicodeXID::is_xid_continue);
         let (span, text) = self.source.bump();
-        let kind = keyword(&text).unwrap_or(Tok![ident]);
+        let kind = keyword(&text).unwrap_or(K![ident]);
         Ok(Token { span, text, kind })
     }
 }
 
 fn keyword(text: &str) -> Option<TokenKind> {
     Some(match text {
-        "let" => Tok![let],
-        "return" => Tok![return],
-        "if" => Tok![if],
-        "else" => Tok![else],
-        "true" => Tok![true],
-        "false" => Tok![false],
+        "let" => K![let],
+        "return" => K![return],
+        "if" => K![if],
+        "else" => K![else],
+        "true" => K![true],
+        "false" => K![false],
         _ => return None,
     })
 }
