@@ -61,6 +61,12 @@ impl TokenDefs {
                 [eof] => { $crate::ast::TokenKind::Eof };
             }
 
+            #[macro_export]
+            /// A helper macro to get the terminal type
+            macro_rules! T {
+                #([#tts] => { $crate::ast::generated::#variants };)*
+            }
+
             impl TokenKind {
                 #as_str_fn
             }
@@ -90,7 +96,7 @@ impl TokenDefs {
 
         quote! {
             /// Get the display of the TokenKind
-            fn as_str(&self) -> &'static str {
+            pub fn as_str(&self) -> &'static str {
                 match self {
                     #(#arms,)*
                     Self::Ident => "ident",
@@ -189,6 +195,7 @@ impl TokenGen {
         });
 
         quote! {
+            #[derive(Debug, Clone, PartialEq, Eq)]
             pub struct #variant {
                 pub token: Token,
             }

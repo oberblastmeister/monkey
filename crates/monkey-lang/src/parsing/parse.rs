@@ -1,6 +1,6 @@
 //! Borrowed from rune
 
-use crate::parsing::{ParseError, Parser, Peek};
+use crate::{ParseError, Parser, Peek, ParseResult};
 
 /// The parse trait, implemented by items that can be parsed.
 pub trait Parse
@@ -8,7 +8,7 @@ where
     Self: Sized,
 {
     /// Parse the current item from the parser.
-    fn parse(p: &mut Parser) -> Result<Self, ParseError>;
+    fn parse(p: &mut Parser) -> ParseResult<Self>;
 }
 
 macro_rules! tuple_impls {

@@ -1,7 +1,7 @@
 use std::collections::VecDeque;
 
-use super::{Lexer, Parse, ParseError, ParseResult, Peek};
-use crate::ast::{Token, TokenKind};
+use super::{Lexer, Parse, ParseError, ParseErrorKind, ParseResult, Peek};
+use crate::ast::{self, Token, TokenKind};
 use crate::Span;
 
 /// Construct used to peek a parser.
@@ -15,6 +15,13 @@ pub struct Peeker<'a> {
 }
 
 impl<'a> Peeker<'a> {
+    pub fn new(input: &'a str) -> Peeker<'a> {
+        let lexer = Lexer::new(input);
+        let buf = VecDeque::new();
+        let last = None;
+        Peeker { lexer, buf, last }
+    }
+
     /// Peek the token kind at the given position.
     pub fn nth(&mut self, n: usize) -> TokenKind {
         match self.at(n) {
@@ -32,7 +39,7 @@ impl<'a> Peeker<'a> {
         while self.buf.len() <= n {
             let token = match self.lexer.next_token() {
                 Ok(token) => token,
-                Err(ParseError::Eof) => break,
+                Err(e) if e.kind() == ParseErrorKind::Eof => break,
                 Err(e) => return Err(e),
             };
 
@@ -50,6 +57,12 @@ pub struct Parser<'a> {
 }
 
 impl<'a> Parser<'a> {
+    pub fn new(input: &'a str) -> Self {
+        Parser {
+            peeker: Peeker::new(input),
+        }
+    }
+
     /// Parse a specific item from the parser.
     pub fn parse<T>(&mut self) -> ParseResult<T>
     where
@@ -68,7 +81,7 @@ impl<'a> Parser<'a> {
 
     /// Try to consume a single thing matching `T`, returns `true` if any tokens
     /// were consumed.
-    pub fn try_consume<T>(&mut self) -> Result<bool, ParseError>
+    pub fn try_parse<T>(&mut self) -> ParseResult<bool>
     where
         T: Parse + Peek,
     {
@@ -82,7 +95,7 @@ impl<'a> Parser<'a> {
 
     /// Try to consume all things matching `T`, returns `true` if any tokens
     /// were consumed.
-    pub fn try_consume_all<T>(&mut self) -> Result<bool, ParseError>
+    pub fn try_parse_all<T>(&mut self) -> ParseResult<bool>
     where
         T: Parse + Peek,
     {
@@ -98,11 +111,62 @@ impl<'a> Parser<'a> {
 
     /// Consume the next token from the parser.
     #[allow(clippy::should_implement_trait)]
-    pub fn next(&mut self) -> Result<Token, ParseError> {
+    pub fn next(&mut self) -> ParseResult<Token> {
         if let Some(t) = self.peeker.buf.pop_front() {
             return Ok(t);
         }
 
         Ok(self.peeker.lexer.next_token()?)
+    }
+
+    /// Peek the token kind at the given position.
+    pub fn nth(&mut self, n: usize) -> ParseResult<TokenKind> {
+        if let Some(t) = self.peeker.at(n)? {
+            Ok(t.kind)
+        } else {
+            Ok(TokenKind::Eof)
+        }
+    }
+
+    /// Test if the parser is at end-of-file, after which there is no more input
+    /// to parse.
+    pub fn is_eof(&mut self) -> Result<bool, ParseError> {
+        Ok(self.peeker.at(0)?.is_none())
+    }
+
+    /// Assert that the parser has reached its end-of-file.
+    pub fn eof(&mut self) -> Result<(), ParseError> {
+        if let Some(token) = self.peeker.at(0)? {
+            return Err(ParseError::new(
+                token,
+                ParseErrorKind::ExpectedEof {
+                    actual: token.kind.as_str(),
+                },
+            ));
+        }
+
+        Ok(())
+    }
+}
+
+pub fn parse<T: Parse>(input: &str) -> ParseResult<T> {
+    Parser::new(input).parse::<T>()
+}
+
+#[cfg(test)]
+mod tests {
+    use std::fs;
+
+    use super::*;
+
+    #[test]
+    fn parser() {
+        insta::glob!("snapshot_inputs/parser/*.txt", |path| {
+            let input = fs::read_to_string(path).unwrap();
+            let suffix = path.file_stem().unwrap().to_str().unwrap();
+            insta::with_settings!({snapshot_path => "snapshots/parser", snapshot_suffix => suffix}, {
+                insta::assert_debug_snapshot!(parse::<ast::File>(&input).map(|f| f.stmts))
+            })
+        })
     }
 }

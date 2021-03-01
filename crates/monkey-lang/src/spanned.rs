@@ -18,3 +18,9 @@ pub trait Spanned {
     /// Get the span of the type.
     fn span(&self) -> Span;
 }
+
+impl Spanned for Span {
+    fn span(&self) -> Span {
+        *self
+    }
+}

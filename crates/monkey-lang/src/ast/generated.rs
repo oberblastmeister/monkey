@@ -76,9 +76,12 @@ pub enum TokenKind {
 #[doc = r" A helper macro to get the token kind"]
 #[macro_export]
 macro_rules ! K { [fn] => { $ crate :: ast :: TokenKind :: FnKw } ; [let] => { $ crate :: ast :: TokenKind :: LetKw } ; [true] => { $ crate :: ast :: TokenKind :: TrueKw } ; [false] => { $ crate :: ast :: TokenKind :: FalseKw } ; [if] => { $ crate :: ast :: TokenKind :: IfKw } ; [else] => { $ crate :: ast :: TokenKind :: ElseKw } ; [return] => { $ crate :: ast :: TokenKind :: ReturnKw } ; [number] => { $ crate :: ast :: TokenKind :: Number } ; [string] => { $ crate :: ast :: TokenKind :: String } ; [==] => { $ crate :: ast :: TokenKind :: EqEq } ; [!=] => { $ crate :: ast :: TokenKind :: NotEq } ; ['('] => { $ crate :: ast :: TokenKind :: LParen } ; [')'] => { $ crate :: ast :: TokenKind :: RParen } ; ['{'] => { $ crate :: ast :: TokenKind :: LBrace } ; ['}'] => { $ crate :: ast :: TokenKind :: RBrace } ; ['['] => { $ crate :: ast :: TokenKind :: LBracket } ; [']'] => { $ crate :: ast :: TokenKind :: RBracket } ; [:] => { $ crate :: ast :: TokenKind :: Colon } ; [=] => { $ crate :: ast :: TokenKind :: Eq } ; [:=] => { $ crate :: ast :: TokenKind :: Walrus } ; [,] => { $ crate :: ast :: TokenKind :: Comma } ; [.] => { $ crate :: ast :: TokenKind :: Dot } ; [;] => { $ crate :: ast :: TokenKind :: Semicolon } ; [+] => { $ crate :: ast :: TokenKind :: Plus } ; [-] => { $ crate :: ast :: TokenKind :: Minus } ; [*] => { $ crate :: ast :: TokenKind :: Asterisk } ; [/] => { $ crate :: ast :: TokenKind :: Slash } ; [%] => { $ crate :: ast :: TokenKind :: Modulo } ; [^] => { $ crate :: ast :: TokenKind :: Caret } ; [<<] => { $ crate :: ast :: TokenKind :: ShiftLeft } ; [>>] => { $ crate :: ast :: TokenKind :: ShiftRight } ; [~] => { $ crate :: ast :: TokenKind :: Tilde } ; [&] => { $ crate :: ast :: TokenKind :: BitAnd } ; [|] => { $ crate :: ast :: TokenKind :: BitOr } ; [<] => { $ crate :: ast :: TokenKind :: Lt } ; [>] => { $ crate :: ast :: TokenKind :: Gt } ; [<=] => { $ crate :: ast :: TokenKind :: LtEq } ; [>=] => { $ crate :: ast :: TokenKind :: GtEq } ; [&&] => { $ crate :: ast :: TokenKind :: LogicalAnd } ; [||] => { $ crate :: ast :: TokenKind :: LogicalOr } ; [!] => { $ crate :: ast :: TokenKind :: Bang } ; [ident] => { $ crate :: ast :: TokenKind :: Ident } ; [eof] => { $ crate :: ast :: TokenKind :: Eof } ; }
+#[macro_export]
+#[doc = r" A helper macro to get the terminal type"]
+macro_rules ! T { [fn] => { $ crate :: ast :: generated :: FnKw } ; [let] => { $ crate :: ast :: generated :: LetKw } ; [true] => { $ crate :: ast :: generated :: TrueKw } ; [false] => { $ crate :: ast :: generated :: FalseKw } ; [if] => { $ crate :: ast :: generated :: IfKw } ; [else] => { $ crate :: ast :: generated :: ElseKw } ; [return] => { $ crate :: ast :: generated :: ReturnKw } ; [number] => { $ crate :: ast :: generated :: Number } ; [string] => { $ crate :: ast :: generated :: String } ; [==] => { $ crate :: ast :: generated :: EqEq } ; [!=] => { $ crate :: ast :: generated :: NotEq } ; ['('] => { $ crate :: ast :: generated :: LParen } ; [')'] => { $ crate :: ast :: generated :: RParen } ; ['{'] => { $ crate :: ast :: generated :: LBrace } ; ['}'] => { $ crate :: ast :: generated :: RBrace } ; ['['] => { $ crate :: ast :: generated :: LBracket } ; [']'] => { $ crate :: ast :: generated :: RBracket } ; [:] => { $ crate :: ast :: generated :: Colon } ; [=] => { $ crate :: ast :: generated :: Eq } ; [:=] => { $ crate :: ast :: generated :: Walrus } ; [,] => { $ crate :: ast :: generated :: Comma } ; [.] => { $ crate :: ast :: generated :: Dot } ; [;] => { $ crate :: ast :: generated :: Semicolon } ; [+] => { $ crate :: ast :: generated :: Plus } ; [-] => { $ crate :: ast :: generated :: Minus } ; [*] => { $ crate :: ast :: generated :: Asterisk } ; [/] => { $ crate :: ast :: generated :: Slash } ; [%] => { $ crate :: ast :: generated :: Modulo } ; [^] => { $ crate :: ast :: generated :: Caret } ; [<<] => { $ crate :: ast :: generated :: ShiftLeft } ; [>>] => { $ crate :: ast :: generated :: ShiftRight } ; [~] => { $ crate :: ast :: generated :: Tilde } ; [&] => { $ crate :: ast :: generated :: BitAnd } ; [|] => { $ crate :: ast :: generated :: BitOr } ; [<] => { $ crate :: ast :: generated :: Lt } ; [>] => { $ crate :: ast :: generated :: Gt } ; [<=] => { $ crate :: ast :: generated :: LtEq } ; [>=] => { $ crate :: ast :: generated :: GtEq } ; [&&] => { $ crate :: ast :: generated :: LogicalAnd } ; [||] => { $ crate :: ast :: generated :: LogicalOr } ; [!] => { $ crate :: ast :: generated :: Bang } ; }
 impl TokenKind {
     #[doc = r" Get the display of the TokenKind"]
-    fn as_str(&self) -> &'static str {
+    pub fn as_str(&self) -> &'static str {
         match self {
             Self::FnKw => "fn",
             Self::LetKw => "let",
@@ -132,6 +135,7 @@ impl fmt::Display for TokenKind {
         f.write_str(self.as_str())
     }
 }
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct FnKw {
     pub token: Token,
 }
@@ -154,6 +158,7 @@ impl fmt::Display for FnKw {
         write!(f, "fn")
     }
 }
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct LetKw {
     pub token: Token,
 }
@@ -176,6 +181,7 @@ impl fmt::Display for LetKw {
         write!(f, "let")
     }
 }
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct TrueKw {
     pub token: Token,
 }
@@ -198,6 +204,7 @@ impl fmt::Display for TrueKw {
         write!(f, "true")
     }
 }
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct FalseKw {
     pub token: Token,
 }
@@ -220,6 +227,7 @@ impl fmt::Display for FalseKw {
         write!(f, "false")
     }
 }
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct IfKw {
     pub token: Token,
 }
@@ -242,6 +250,7 @@ impl fmt::Display for IfKw {
         write!(f, "if")
     }
 }
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct ElseKw {
     pub token: Token,
 }
@@ -264,6 +273,7 @@ impl fmt::Display for ElseKw {
         write!(f, "else")
     }
 }
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct ReturnKw {
     pub token: Token,
 }
@@ -286,6 +296,7 @@ impl fmt::Display for ReturnKw {
         write!(f, "return")
     }
 }
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Number {
     pub token: Token,
 }
@@ -303,6 +314,7 @@ impl parsing::Peek for Number {
         matches!(peeker.nth(0), TokenKind::Number)
     }
 }
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct String {
     pub token: Token,
 }
@@ -320,6 +332,7 @@ impl parsing::Peek for String {
         matches!(peeker.nth(0), TokenKind::String)
     }
 }
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct EqEq {
     pub token: Token,
 }
@@ -342,6 +355,7 @@ impl fmt::Display for EqEq {
         write!(f, "==")
     }
 }
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct NotEq {
     pub token: Token,
 }
@@ -364,6 +378,7 @@ impl fmt::Display for NotEq {
         write!(f, "!=")
     }
 }
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct LParen {
     pub token: Token,
 }
@@ -386,6 +401,7 @@ impl fmt::Display for LParen {
         write!(f, "(")
     }
 }
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct RParen {
     pub token: Token,
 }
@@ -408,6 +424,7 @@ impl fmt::Display for RParen {
         write!(f, ")")
     }
 }
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct LBrace {
     pub token: Token,
 }
@@ -430,6 +447,7 @@ impl fmt::Display for LBrace {
         write!(f, "{{")
     }
 }
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct RBrace {
     pub token: Token,
 }
@@ -452,6 +470,7 @@ impl fmt::Display for RBrace {
         write!(f, "}}")
     }
 }
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct LBracket {
     pub token: Token,
 }
@@ -474,6 +493,7 @@ impl fmt::Display for LBracket {
         write!(f, "[")
     }
 }
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct RBracket {
     pub token: Token,
 }
@@ -496,6 +516,7 @@ impl fmt::Display for RBracket {
         write!(f, "]")
     }
 }
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Colon {
     pub token: Token,
 }
@@ -518,6 +539,7 @@ impl fmt::Display for Colon {
         write!(f, ":")
     }
 }
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Eq {
     pub token: Token,
 }
@@ -540,6 +562,7 @@ impl fmt::Display for Eq {
         write!(f, "=")
     }
 }
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Walrus {
     pub token: Token,
 }
@@ -562,6 +585,7 @@ impl fmt::Display for Walrus {
         write!(f, ":=")
     }
 }
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Comma {
     pub token: Token,
 }
@@ -584,6 +608,7 @@ impl fmt::Display for Comma {
         write!(f, ",")
     }
 }
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Dot {
     pub token: Token,
 }
@@ -606,6 +631,7 @@ impl fmt::Display for Dot {
         write!(f, ".")
     }
 }
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Semicolon {
     pub token: Token,
 }
@@ -628,6 +654,7 @@ impl fmt::Display for Semicolon {
         write!(f, ";")
     }
 }
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Plus {
     pub token: Token,
 }
@@ -650,6 +677,7 @@ impl fmt::Display for Plus {
         write!(f, "+")
     }
 }
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Minus {
     pub token: Token,
 }
@@ -672,6 +700,7 @@ impl fmt::Display for Minus {
         write!(f, "-")
     }
 }
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Asterisk {
     pub token: Token,
 }
@@ -694,6 +723,7 @@ impl fmt::Display for Asterisk {
         write!(f, "*")
     }
 }
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Slash {
     pub token: Token,
 }
@@ -716,6 +746,7 @@ impl fmt::Display for Slash {
         write!(f, "/")
     }
 }
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Modulo {
     pub token: Token,
 }
@@ -738,6 +769,7 @@ impl fmt::Display for Modulo {
         write!(f, "%")
     }
 }
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Caret {
     pub token: Token,
 }
@@ -760,6 +792,7 @@ impl fmt::Display for Caret {
         write!(f, "^")
     }
 }
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct ShiftLeft {
     pub token: Token,
 }
@@ -782,6 +815,7 @@ impl fmt::Display for ShiftLeft {
         write!(f, "<<")
     }
 }
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct ShiftRight {
     pub token: Token,
 }
@@ -804,6 +838,7 @@ impl fmt::Display for ShiftRight {
         write!(f, ">>")
     }
 }
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Tilde {
     pub token: Token,
 }
@@ -826,6 +861,7 @@ impl fmt::Display for Tilde {
         write!(f, "~")
     }
 }
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct BitAnd {
     pub token: Token,
 }
@@ -848,6 +884,7 @@ impl fmt::Display for BitAnd {
         write!(f, "&")
     }
 }
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct BitOr {
     pub token: Token,
 }
@@ -870,6 +907,7 @@ impl fmt::Display for BitOr {
         write!(f, "|")
     }
 }
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Lt {
     pub token: Token,
 }
@@ -892,6 +930,7 @@ impl fmt::Display for Lt {
         write!(f, "<")
     }
 }
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Gt {
     pub token: Token,
 }
@@ -914,6 +953,7 @@ impl fmt::Display for Gt {
         write!(f, ">")
     }
 }
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct LtEq {
     pub token: Token,
 }
@@ -936,6 +976,7 @@ impl fmt::Display for LtEq {
         write!(f, "<=")
     }
 }
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct GtEq {
     pub token: Token,
 }
@@ -958,6 +999,7 @@ impl fmt::Display for GtEq {
         write!(f, ">=")
     }
 }
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct LogicalAnd {
     pub token: Token,
 }
@@ -980,6 +1022,7 @@ impl fmt::Display for LogicalAnd {
         write!(f, "&&")
     }
 }
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct LogicalOr {
     pub token: Token,
 }
@@ -1002,6 +1045,7 @@ impl fmt::Display for LogicalOr {
         write!(f, "||")
     }
 }
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Bang {
     pub token: Token,
 }

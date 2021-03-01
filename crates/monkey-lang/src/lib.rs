@@ -4,4 +4,4 @@ mod spanned;
 mod parsing;
 
 pub(crate) use spanned::{Spanned, Span};
-pub use parsing::lex;
+pub use parsing::{ParseErrorKind, ParseError, ParseResult, Parse, Peek, Peeker, Parser, lex};

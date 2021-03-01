@@ -5,9 +5,9 @@
 use smol_str::SmolStr;
 use unicode_xid::UnicodeXID;
 
-use super::{ParseError, ParseResult, ToEof};
+use super::{ParseError, ParseErrorKind, ParseResult, ToEof};
 use crate::ast::{Token, TokenKind};
-use crate::Span;
+use crate::{Span, Spanned};
 use std::str::Chars;
 
 #[derive(Debug)]
@@ -77,15 +77,25 @@ impl<'a> Source<'a> {
         self.start = self.pos()
     }
 
+    fn bump_span(&mut self) -> Span {
+        self.bump_pos();
+        self.span()
+    }
+
     fn text(&mut self) -> SmolStr {
         self.input[self.start()..self.pos()].into()
     }
 
     fn bump(&mut self) -> (Span, SmolStr) {
-        let span = Span::new(self.start(), self.pos());
-        let text = self.text();
+        let res = (self.span(), self.text());
         self.bump_pos();
-        (span, text)
+        res
+    }
+}
+
+impl Spanned for Source<'_> {
+    fn span(&self) -> Span {
+        Span::new(self.start(), self.pos())
     }
 }
 
@@ -107,18 +117,14 @@ pub fn lex(input: &str) -> Vec<ParseResult<Token>> {
 }
 
 impl<'a> Lexer<'a> {
-    fn new(input: &'a str) -> Lexer<'a> {
+    pub fn new(input: &'a str) -> Lexer<'a> {
         Lexer {
             source: Source::new(input),
         }
     }
 
-    fn peek_n(&self) -> ParseResult<char> {
-        self.source.peek().ok_or(ParseError::Eof)
-    }
-
     pub fn next_token(&mut self) -> ParseResult<Token> {
-        let next_char = self.source.next().eof()?;
+        let next_char = self.source.next().eof(|| self.source.bump_span())?;
         let peek_char = self.source.peek();
 
         let kind = match next_char {
@@ -210,8 +216,8 @@ impl<'a> Lexer<'a> {
             _ if is_whitespace(next_char) => return self.whitespace(),
             _ if next_char.is_xid_start() => return self.maybe_ident(),
             _ => {
-                self.source.bump_pos();
-                return Err(ParseError::Unknown);
+                let span = self.source.bump_span();
+                return Err(ParseError::new(&span, ParseErrorKind::Unknown));
             }
         };
 
@@ -226,7 +232,7 @@ impl<'a> Lexer<'a> {
         loop {
             let result = self.next_token();
             match result {
-                Err(ParseError::Eof) => return results,
+                Err(e) if e.kind() == ParseErrorKind::Eof => return results,
                 t => results.push(t),
             }
         }
@@ -239,7 +245,9 @@ impl<'a> Lexer<'a> {
     }
 
     fn string_lit(&mut self) -> ParseResult<Token> {
-        self.source.find(|c| *c == '"').eof()?;
+        self.source
+            .find(|c| *c == '"')
+            .eof(|| self.source.bump_span())?;
         let (span, text) = self.source.bump();
         Ok(Token {
             span,
