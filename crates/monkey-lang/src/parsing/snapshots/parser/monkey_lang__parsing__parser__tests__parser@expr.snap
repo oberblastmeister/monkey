@@ -1,0 +1,514 @@
+---
+source: crates/monkey-lang/src/parsing/parser.rs
+expression: "parse::<ast::File>(&input).map(|f| f.stmts)"
+
+---
+Ok(
+    [
+        Expr(
+            Binary(
+                ExprBinary {
+                    lhs: Binary(
+                        ExprBinary {
+                            lhs: Binary(
+                                ExprBinary {
+                                    lhs: Lit(
+                                        Num(
+                                            LitNum {
+                                                num: Number {
+                                                    token: Token {
+                                                        span: Span {
+                                                            start: 0,
+                                                            end: 1,
+                                                        },
+                                                        kind: Number,
+                                                        text: "1",
+                                                    },
+                                                },
+                                                value: 1.0,
+                                            },
+                                        ),
+                                    ),
+                                    token: Token {
+                                        span: Span {
+                                            start: 2,
+                                            end: 3,
+                                        },
+                                        kind: Plus,
+                                        text: "+",
+                                    },
+                                    op: Add,
+                                    rhs: Lit(
+                                        Num(
+                                            LitNum {
+                                                num: Number {
+                                                    token: Token {
+                                                        span: Span {
+                                                            start: 4,
+                                                            end: 5,
+                                                        },
+                                                        kind: Number,
+                                                        text: "1",
+                                                    },
+                                                },
+                                                value: 1.0,
+                                            },
+                                        ),
+                                    ),
+                                },
+                            ),
+                            token: Token {
+                                span: Span {
+                                    start: 6,
+                                    end: 7,
+                                },
+                                kind: Plus,
+                                text: "+",
+                            },
+                            op: Add,
+                            rhs: Lit(
+                                Num(
+                                    LitNum {
+                                        num: Number {
+                                            token: Token {
+                                                span: Span {
+                                                    start: 8,
+                                                    end: 9,
+                                                },
+                                                kind: Number,
+                                                text: "1",
+                                            },
+                                        },
+                                        value: 1.0,
+                                    },
+                                ),
+                            ),
+                        },
+                    ),
+                    token: Token {
+                        span: Span {
+                            start: 10,
+                            end: 11,
+                        },
+                        kind: Plus,
+                        text: "+",
+                    },
+                    op: Add,
+                    rhs: Lit(
+                        Num(
+                            LitNum {
+                                num: Number {
+                                    token: Token {
+                                        span: Span {
+                                            start: 12,
+                                            end: 13,
+                                        },
+                                        kind: Number,
+                                        text: "1",
+                                    },
+                                },
+                                value: 1.0,
+                            },
+                        ),
+                    ),
+                },
+            ),
+            Semicolon {
+                token: Token {
+                    span: Span {
+                        start: 13,
+                        end: 14,
+                    },
+                    kind: Semicolon,
+                    text: ";",
+                },
+            },
+        ),
+        Expr(
+            Binary(
+                ExprBinary {
+                    lhs: Binary(
+                        ExprBinary {
+                            lhs: Lit(
+                                Num(
+                                    LitNum {
+                                        num: Number {
+                                            token: Token {
+                                                span: Span {
+                                                    start: 15,
+                                                    end: 16,
+                                                },
+                                                kind: Number,
+                                                text: "1",
+                                            },
+                                        },
+                                        value: 1.0,
+                                    },
+                                ),
+                            ),
+                            token: Token {
+                                span: Span {
+                                    start: 17,
+                                    end: 18,
+                                },
+                                kind: Minus,
+                                text: "-",
+                            },
+                            op: Sub,
+                            rhs: Lit(
+                                Num(
+                                    LitNum {
+                                        num: Number {
+                                            token: Token {
+                                                span: Span {
+                                                    start: 19,
+                                                    end: 23,
+                                                },
+                                                kind: Number,
+                                                text: "3134",
+                                            },
+                                        },
+                                        value: 3134.0,
+                                    },
+                                ),
+                            ),
+                        },
+                    ),
+                    token: Token {
+                        span: Span {
+                            start: 24,
+                            end: 25,
+                        },
+                        kind: Plus,
+                        text: "+",
+                    },
+                    op: Add,
+                    rhs: Lit(
+                        Num(
+                            LitNum {
+                                num: Number {
+                                    token: Token {
+                                        span: Span {
+                                            start: 26,
+                                            end: 29,
+                                        },
+                                        kind: Number,
+                                        text: "134",
+                                    },
+                                },
+                                value: 134.0,
+                            },
+                        ),
+                    ),
+                },
+            ),
+            Semicolon {
+                token: Token {
+                    span: Span {
+                        start: 29,
+                        end: 30,
+                    },
+                    kind: Semicolon,
+                    text: ";",
+                },
+            },
+        ),
+        Expr(
+            Binary(
+                ExprBinary {
+                    lhs: Binary(
+                        ExprBinary {
+                            lhs: Binary(
+                                ExprBinary {
+                                    lhs: Lit(
+                                        Num(
+                                            LitNum {
+                                                num: Number {
+                                                    token: Token {
+                                                        span: Span {
+                                                            start: 31,
+                                                            end: 34,
+                                                        },
+                                                        kind: Number,
+                                                        text: "123",
+                                                    },
+                                                },
+                                                value: 123.0,
+                                            },
+                                        ),
+                                    ),
+                                    token: Token {
+                                        span: Span {
+                                            start: 35,
+                                            end: 36,
+                                        },
+                                        kind: Asterisk,
+                                        text: "*",
+                                    },
+                                    op: Mul,
+                                    rhs: Lit(
+                                        Num(
+                                            LitNum {
+                                                num: Number {
+                                                    token: Token {
+                                                        span: Span {
+                                                            start: 37,
+                                                            end: 41,
+                                                        },
+                                                        kind: Number,
+                                                        text: "2341",
+                                                    },
+                                                },
+                                                value: 2341.0,
+                                            },
+                                        ),
+                                    ),
+                                },
+                            ),
+                            token: Token {
+                                span: Span {
+                                    start: 42,
+                                    end: 43,
+                                },
+                                kind: Minus,
+                                text: "-",
+                            },
+                            op: Sub,
+                            rhs: Lit(
+                                Num(
+                                    LitNum {
+                                        num: Number {
+                                            token: Token {
+                                                span: Span {
+                                                    start: 44,
+                                                    end: 47,
+                                                },
+                                                kind: Number,
+                                                text: "234",
+                                            },
+                                        },
+                                        value: 234.0,
+                                    },
+                                ),
+                            ),
+                        },
+                    ),
+                    token: Token {
+                        span: Span {
+                            start: 48,
+                            end: 49,
+                        },
+                        kind: Plus,
+                        text: "+",
+                    },
+                    op: Add,
+                    rhs: Lit(
+                        Num(
+                            LitNum {
+                                num: Number {
+                                    token: Token {
+                                        span: Span {
+                                            start: 50,
+                                            end: 53,
+                                        },
+                                        kind: Number,
+                                        text: "134",
+                                    },
+                                },
+                                value: 134.0,
+                            },
+                        ),
+                    ),
+                },
+            ),
+            Semicolon {
+                token: Token {
+                    span: Span {
+                        start: 53,
+                        end: 54,
+                    },
+                    kind: Semicolon,
+                    text: ";",
+                },
+            },
+        ),
+        Expr(
+            Binary(
+                ExprBinary {
+                    lhs: Lit(
+                        Num(
+                            LitNum {
+                                num: Number {
+                                    token: Token {
+                                        span: Span {
+                                            start: 55,
+                                            end: 57,
+                                        },
+                                        kind: Number,
+                                        text: "34",
+                                    },
+                                },
+                                value: 34.0,
+                            },
+                        ),
+                    ),
+                    token: Token {
+                        span: Span {
+                            start: 58,
+                            end: 59,
+                        },
+                        kind: Plus,
+                        text: "+",
+                    },
+                    op: Add,
+                    rhs: Binary(
+                        ExprBinary {
+                            lhs: Lit(
+                                Num(
+                                    LitNum {
+                                        num: Number {
+                                            token: Token {
+                                                span: Span {
+                                                    start: 60,
+                                                    end: 64,
+                                                },
+                                                kind: Number,
+                                                text: "1324",
+                                            },
+                                        },
+                                        value: 1324.0,
+                                    },
+                                ),
+                            ),
+                            token: Token {
+                                span: Span {
+                                    start: 65,
+                                    end: 66,
+                                },
+                                kind: Asterisk,
+                                text: "*",
+                            },
+                            op: Mul,
+                            rhs: Lit(
+                                Num(
+                                    LitNum {
+                                        num: Number {
+                                            token: Token {
+                                                span: Span {
+                                                    start: 67,
+                                                    end: 70,
+                                                },
+                                                kind: Number,
+                                                text: "443",
+                                            },
+                                        },
+                                        value: 443.0,
+                                    },
+                                ),
+                            ),
+                        },
+                    ),
+                },
+            ),
+            Semicolon {
+                token: Token {
+                    span: Span {
+                        start: 70,
+                        end: 71,
+                    },
+                    kind: Semicolon,
+                    text: ";",
+                },
+            },
+        ),
+        Expr(
+            Binary(
+                ExprBinary {
+                    lhs: Lit(
+                        Num(
+                            LitNum {
+                                num: Number {
+                                    token: Token {
+                                        span: Span {
+                                            start: 72,
+                                            end: 74,
+                                        },
+                                        kind: Number,
+                                        text: "34",
+                                    },
+                                },
+                                value: 34.0,
+                            },
+                        ),
+                    ),
+                    token: Token {
+                        span: Span {
+                            start: 75,
+                            end: 76,
+                        },
+                        kind: Asterisk,
+                        text: "*",
+                    },
+                    op: Mul,
+                    rhs: Binary(
+                        ExprBinary {
+                            lhs: Lit(
+                                Num(
+                                    LitNum {
+                                        num: Number {
+                                            token: Token {
+                                                span: Span {
+                                                    start: 78,
+                                                    end: 80,
+                                                },
+                                                kind: Number,
+                                                text: "48",
+                                            },
+                                        },
+                                        value: 48.0,
+                                    },
+                                ),
+                            ),
+                            token: Token {
+                                span: Span {
+                                    start: 81,
+                                    end: 82,
+                                },
+                                kind: Plus,
+                                text: "+",
+                            },
+                            op: Add,
+                            rhs: Lit(
+                                Num(
+                                    LitNum {
+                                        num: Number {
+                                            token: Token {
+                                                span: Span {
+                                                    start: 83,
+                                                    end: 84,
+                                                },
+                                                kind: Number,
+                                                text: "3",
+                                            },
+                                        },
+                                        value: 3.0,
+                                    },
+                                ),
+                            ),
+                        },
+                    ),
+                },
+            ),
+            Semicolon {
+                token: Token {
+                    span: Span {
+                        start: 85,
+                        end: 86,
+                    },
+                    kind: Semicolon,
+                    text: ";",
+                },
+            },
+        ),
+    ],
+)

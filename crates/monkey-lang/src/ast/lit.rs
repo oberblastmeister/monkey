@@ -19,3 +19,9 @@ impl Parse for Lit {
         Err(ParseError::expected(&p.next()?, "expected literal"))
     }
 }
+
+impl Peek for Lit {
+    fn peek(p: &mut Peeker) -> bool {
+        p.peek::<ast::LitBool>() | p.peek::<ast::LitStr>() | p.peek::<ast::LitNum>()
+    }
+}

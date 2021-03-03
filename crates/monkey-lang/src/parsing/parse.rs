@@ -1,6 +1,6 @@
 //! Borrowed from rune
 
-use crate::{ParseError, Parser, Peek, ParseResult};
+use crate::{ParseError, ParseResult, Parser, Peek};
 
 /// The parse trait, implemented by items that can be parsed.
 pub trait Parse
@@ -43,7 +43,7 @@ where
     T: Parse + Peek,
 {
     fn parse(parser: &mut Parser) -> Result<Self, ParseError> {
-        Ok(if parser.peek::<T>()? {
+        Ok(if parser.peek::<T>() {
             Some(parser.parse()?)
         } else {
             None
@@ -70,7 +70,7 @@ where
     fn parse(parser: &mut Parser) -> Result<Self, ParseError> {
         let mut output = Vec::new();
 
-        while parser.peek::<T>()? {
+        while parser.peek::<T>() {
             output.push(parser.parse()?);
         }
 

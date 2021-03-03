@@ -49,11 +49,19 @@ impl<'a> Peeker<'a> {
 
         Ok(self.buf.get(n))
     }
+
+    /// Peek something else
+    pub fn peek<T>(&mut self) -> bool
+    where
+        T: Peek,
+    {
+        T::peek(self)
+    }
 }
 
 #[derive(Debug)]
 pub struct Parser<'a> {
-    peeker: Peeker<'a>,
+    pub peeker: Peeker<'a>,
     errors: Vec<ParseError>,
 }
 
@@ -73,12 +81,11 @@ impl<'a> Parser<'a> {
         T::parse(self)
     }
 
-    pub fn peek<T>(&mut self) -> ParseResult<bool>
+    pub fn peek<T>(&mut self) -> bool
     where
         T: Peek,
     {
-        let result = T::peek(&mut self.peeker);
-        Ok(result)
+        T::peek(&mut self.peeker)
     }
 
     /// Try to consume a single thing matching `T`, returns `true` if any tokens
@@ -87,7 +94,7 @@ impl<'a> Parser<'a> {
     where
         T: Parse + Peek,
     {
-        Ok(if self.peek::<T>()? {
+        Ok(if self.peek::<T>() {
             self.parse::<T>()?;
             true
         } else {
@@ -103,7 +110,7 @@ impl<'a> Parser<'a> {
     {
         let mut consumed = false;
 
-        while self.peek::<T>()? {
+        while self.peek::<T>() {
             self.parse::<T>()?;
             consumed = true;
         }
