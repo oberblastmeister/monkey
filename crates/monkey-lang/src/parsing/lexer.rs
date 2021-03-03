@@ -209,7 +209,8 @@ impl<'a> Lexer<'a> {
             '~' => K![~],
 
             // literals
-            '"' => return self.string_lit(),
+            c @ '"' => return self.string_lit(c),
+            c @ '\'' => return self.string_lit(c),
             '0'..='9' => return self.number_lit(),
 
             // special
@@ -232,7 +233,7 @@ impl<'a> Lexer<'a> {
         loop {
             let result = self.next_token();
             match result {
-                Err(e) if e.kind() == ParseErrorKind::Eof => return results,
+                Err(e) if e.kind() == &ParseErrorKind::Eof => return results,
                 t => results.push(t),
             }
         }
@@ -244,9 +245,9 @@ impl<'a> Lexer<'a> {
         self.next_token()
     }
 
-    fn string_lit(&mut self) -> ParseResult<Token> {
+    fn string_lit(&mut self, delimit: char) -> ParseResult<Token> {
         self.source
-            .find(|c| *c == '"')
+            .find(|c| *c == delimit)
             .eof(|| self.source.bump_span())?;
         let (span, text) = self.source.bump();
         Ok(Token {

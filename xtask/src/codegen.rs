@@ -206,7 +206,7 @@ impl TokenGen {
 
                     match token.kind {
                         TokenKind::#variant => Ok(Self { token }),
-                        _ => Err(parsing::ParseError::expected(&token, "abstract")),
+                        _ => Err(parsing::ParseError::expected(&token, TokenKind::#variant.as_str())),
                     }
                 }
             }

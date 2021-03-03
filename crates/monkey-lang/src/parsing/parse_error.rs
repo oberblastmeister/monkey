@@ -7,7 +7,7 @@ use crate::{Span, Spanned};
 
 pub type ParseResult<T, E = ParseError> = Result<T, E>;
 
-#[derive(Error, Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Error, Debug, Clone, PartialEq, Eq)]
 pub enum ParseErrorKind {
     #[error("Unexpected end of file")]
     Eof,
@@ -23,6 +23,9 @@ pub enum ParseErrorKind {
         actual: &'static str,
         expected: &'static str,
     },
+
+    #[error("Invalid number literal: {0}")]
+    InvalidLitNum(#[from] std::num::ParseFloatError),
 }
 
 /// None is Eof
@@ -56,8 +59,8 @@ impl ParseError {
         }
     }
 
-    pub fn kind(&self) -> ParseErrorKind {
-        self.kind
+    pub fn kind(&self) -> &ParseErrorKind {
+        &self.kind
     }
 
     pub(crate) fn eof(span: Span) -> Self {

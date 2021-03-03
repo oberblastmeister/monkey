@@ -1,0 +1,17 @@
+---
+source: crates/monkey-lang/src/parsing/parser.rs
+expression: "parse::<ast::File>(&input).map(|f| f.stmts)"
+
+---
+Err(
+    ParseError {
+        span: Span {
+            start: 7,
+            end: 21,
+        },
+        kind: Expected {
+            actual: "string",
+            expected: ";",
+        },
+    },
+)

@@ -1,7 +1,7 @@
 ---
 source: crates/monkey-lang/src/parsing/lexer.rs
 expression: lex(&input)
-
+language: rust
 ---
 [
     Ok(

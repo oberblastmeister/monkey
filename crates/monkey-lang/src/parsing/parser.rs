@@ -39,7 +39,7 @@ impl<'a> Peeker<'a> {
         while self.buf.len() <= n {
             let token = match self.lexer.next_token() {
                 Ok(token) => token,
-                Err(e) if e.kind() == ParseErrorKind::Eof => break,
+                Err(e) if e.kind() == &ParseErrorKind::Eof => break,
                 Err(e) => return Err(e),
             };
 
@@ -54,12 +54,14 @@ impl<'a> Peeker<'a> {
 #[derive(Debug)]
 pub struct Parser<'a> {
     peeker: Peeker<'a>,
+    errors: Vec<ParseError>,
 }
 
 impl<'a> Parser<'a> {
     pub fn new(input: &'a str) -> Self {
         Parser {
             peeker: Peeker::new(input),
+            errors: Vec::new(),
         }
     }
 
@@ -116,7 +118,15 @@ impl<'a> Parser<'a> {
             return Ok(t);
         }
 
-        Ok(self.peeker.lexer.next_token()?)
+        match self.peeker.lexer.next_token() {
+            Err(e) if e.kind() == &ParseErrorKind::Eof => Ok(Token {
+                span: Span::new(0, 0),
+                kind: TokenKind::Eof,
+                text: "".into(),
+            }),
+            Err(e) => Err(e),
+            Ok(t) => Ok(t),
+        }
     }
 
     /// Peek the token kind at the given position.

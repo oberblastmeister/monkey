@@ -1,6 +1,6 @@
 use crate::{ast, Parse, ParseError, ParseResult, Parser, Peek, Peeker, Spanned};
 
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct LitBool {
     pub token: ast::Token,
     pub value: bool,
