@@ -17,6 +17,8 @@ impl Op {
 pub enum BinOp {
     Add,
     Sub,
+    Mul,
+    Div,
 }
 
 use BinOp::*;
@@ -33,6 +35,7 @@ impl BinOp {
     fn binding_power(self) -> (u8, u8) {
         match self {
             Add | Sub => (1, 2),
+            Mul | Div => (3, 4),
         }
     }
 }

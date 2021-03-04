@@ -2,30 +2,14 @@ use crate::{ast, Parse, ParseError, ParseResult, Parser, Peek, Peeker, Spanned};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct ExprBinary {
+    /// The left hand side of the expression
     pub lhs: ast::Expr,
     /// the token of the operator
     pub token: ast::Token,
+    /// The operator type
     pub op: BinOp,
+    /// The right hand side of the expression
     pub rhs: ast::Expr,
-}
-
-impl ExprBinary {
-    pub fn with_lhs(
-        p: &mut Parser<'_>,
-        lhs: ast::Expr,
-        op: BinOp,
-    ) -> ParseResult<ExprBinary> {
-        assert!(BinOp::from_peeker(&mut p.peeker).is_some());
-
-        let token = p.next()?;
-
-        Ok(ExprBinary {
-            lhs,
-            token,
-            op,
-            rhs: p.parse()?,
-        })
-    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq)]

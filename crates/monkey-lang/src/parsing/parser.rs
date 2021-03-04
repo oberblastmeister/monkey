@@ -61,7 +61,7 @@ impl<'a> Peeker<'a> {
 
 #[derive(Debug)]
 pub struct Parser<'a> {
-    pub peeker: Peeker<'a>,
+    peeker: Peeker<'a>,
     errors: Vec<ParseError>,
 }
 
@@ -71,6 +71,11 @@ impl<'a> Parser<'a> {
             peeker: Peeker::new(input),
             errors: Vec::new(),
         }
+    }
+
+    #[inline]
+    pub fn peeker(&mut self) -> &mut Peeker<'a> {
+        &mut self.peeker
     }
 
     /// Parse a specific item from the parser.

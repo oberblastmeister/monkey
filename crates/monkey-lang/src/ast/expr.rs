@@ -30,7 +30,7 @@ fn expr_bp(p: &mut Parser, min_bp: u8) -> ParseResult<Expr> {
             break;
         };
 
-        let op = ast::BinOp::from_peeker(&mut p.peeker).ok_or_else(|| {
+        let op = ast::BinOp::from_peeker(p.peeker()).ok_or_else(|| {
             ParseError::expected(&p.next().unwrap(), "Expected a binary operator")
         })?;
 
