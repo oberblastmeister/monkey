@@ -8,7 +8,7 @@ pub enum Op {
     LogicalAnd,
 
     #[prec(infix, left)]
-    LocialOr,
+    LogicalOr,
 
     #[prec(infix, left)]
     BitOr,
@@ -53,7 +53,10 @@ pub enum Op {
     Power,
 
     #[prec(prefix)]
-    Not,
+    BitNot,
+
+    #[prec(prefix)]
+    LogicalNot,
 }
 
 use Op::*;
@@ -61,13 +64,29 @@ use Op::*;
 impl Op {
     pub fn from_kind(kind: ast::TokenKind) -> Option<Op> {
         Some(match kind {
+            K![&&] => LogicalAnd,
+            K![||] => LogicalOr,
+
+            K![&] => BitAnd,
+            K![|] => BitOr,
+
+            K![>] => Gt,
+            K![>=] => GtEq,
+            K![<] => Lt,
+            K![<=] => LtEq,
+
+            K![<<] => ShiftLeft,
+            K![>>] => ShiftRight,
+
             K![+] => Add,
             K![-] => Sub,
             K![*] => Mul,
             K![/] => Div,
-            K![^] => Power,
-            K![!] => Not,
             K![%] => Modulo,
+
+            K![^] => Power,
+            K![~] => BitNot,
+            K![!] => LogicalNot,
             _ => return None,
         })
     }
