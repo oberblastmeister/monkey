@@ -349,6 +349,7 @@ name = "monkey-lang"
 version = "0.1.0"
 dependencies = [
  "insta",
+ "monkey-util",
  "smol_str",
  "thiserror",
  "unicode-xid",

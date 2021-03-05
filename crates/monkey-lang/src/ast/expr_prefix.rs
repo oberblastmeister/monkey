@@ -1,9 +1,7 @@
 use crate::{ast, Parse, ParseError, ParseResult, Parser, Peek, Peeker, Spanned};
 
 #[derive(Debug, Clone, PartialEq)]
-pub struct ExprBinary {
-    /// The left hand side of the expression
-    pub lhs: ast::Expr,
+pub struct ExprPrefix {
     /// the token of the operator
     pub token: ast::Token,
     /// The operator type
@@ -11,5 +9,3 @@ pub struct ExprBinary {
     /// The right hand side of the expression
     pub rhs: ast::Expr,
 }
-
-// expr_parse!(Binary, ExprBinary, "binary expression");

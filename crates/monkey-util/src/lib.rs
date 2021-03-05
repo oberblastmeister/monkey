@@ -15,6 +15,14 @@ pub fn __precedence(n: u8) -> Precedence {
 }
 
 impl Precedence {
+    pub fn min() -> Precedence {
+        Precedence(u8::MIN)
+    }
+
+    pub fn max() -> Precedence {
+        Precedence(u8::MAX)
+    }
+    
     pub fn inner(self) -> u8 {
         self.0
     }

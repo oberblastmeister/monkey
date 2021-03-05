@@ -1,0 +1,128 @@
+---
+source: crates/monkey-lang/src/parsing/parser.rs
+expression: "parse::<ast::File>(&input).map(|f| f.stmts)"
+
+---
+Ok(
+    [
+        Expr(
+            Binary(
+                ExprBinary {
+                    lhs: Lit(
+                        Num(
+                            LitNum {
+                                num: Number {
+                                    token: Token {
+                                        span: Span {
+                                            start: 0,
+                                            end: 1,
+                                        },
+                                        kind: Number,
+                                        text: "5",
+                                    },
+                                },
+                                value: 5.0,
+                            },
+                        ),
+                    ),
+                    token: Token {
+                        span: Span {
+                            start: 2,
+                            end: 3,
+                        },
+                        kind: Plus,
+                        text: "+",
+                    },
+                    op: Add,
+                    rhs: Binary(
+                        ExprBinary {
+                            lhs: Lit(
+                                Num(
+                                    LitNum {
+                                        num: Number {
+                                            token: Token {
+                                                span: Span {
+                                                    start: 4,
+                                                    end: 5,
+                                                },
+                                                kind: Number,
+                                                text: "5",
+                                            },
+                                        },
+                                        value: 5.0,
+                                    },
+                                ),
+                            ),
+                            token: Token {
+                                span: Span {
+                                    start: 5,
+                                    end: 6,
+                                },
+                                kind: Caret,
+                                text: "^",
+                            },
+                            op: Power,
+                            rhs: Binary(
+                                ExprBinary {
+                                    lhs: Lit(
+                                        Num(
+                                            LitNum {
+                                                num: Number {
+                                                    token: Token {
+                                                        span: Span {
+                                                            start: 6,
+                                                            end: 7,
+                                                        },
+                                                        kind: Number,
+                                                        text: "7",
+                                                    },
+                                                },
+                                                value: 7.0,
+                                            },
+                                        ),
+                                    ),
+                                    token: Token {
+                                        span: Span {
+                                            start: 7,
+                                            end: 8,
+                                        },
+                                        kind: Caret,
+                                        text: "^",
+                                    },
+                                    op: Power,
+                                    rhs: Lit(
+                                        Num(
+                                            LitNum {
+                                                num: Number {
+                                                    token: Token {
+                                                        span: Span {
+                                                            start: 8,
+                                                            end: 9,
+                                                        },
+                                                        kind: Number,
+                                                        text: "8",
+                                                    },
+                                                },
+                                                value: 8.0,
+                                            },
+                                        ),
+                                    ),
+                                },
+                            ),
+                        },
+                    ),
+                },
+            ),
+            Semicolon {
+                token: Token {
+                    span: Span {
+                        start: 9,
+                        end: 10,
+                    },
+                    kind: Semicolon,
+                    text: ";",
+                },
+            },
+        ),
+    ],
+)

@@ -14,7 +14,7 @@ pub fn derive(node: &DeriveInput) -> Result<TokenStream> {
 }
 
 fn expand_enum(ident: &Ident, node: &DataEnum) -> Result<TokenStream> {
-    let mut counter = 0;
+    let mut counter = 1;
 
     let arms = node
         .variants
@@ -24,7 +24,7 @@ fn expand_enum(ident: &Ident, node: &DataEnum) -> Result<TokenStream> {
 
     Ok(quote! {
         impl #ident {
-            fn precedence(&self) -> monkey_util::PrecedenceType {
+            pub fn precedence(&self) -> monkey_util::PrecedenceType {
                 match self {
                     #(#arms,)*
                 }

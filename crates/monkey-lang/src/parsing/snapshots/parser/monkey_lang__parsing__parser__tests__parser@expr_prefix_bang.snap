@@ -1,0 +1,109 @@
+---
+source: crates/monkey-lang/src/parsing/parser.rs
+expression: "parse::<ast::File>(&input).map(|f| f.stmts)"
+
+---
+Ok(
+    [
+        Expr(
+            Binary(
+                ExprBinary {
+                    lhs: Lit(
+                        Num(
+                            LitNum {
+                                num: Number {
+                                    token: Token {
+                                        span: Span {
+                                            start: 0,
+                                            end: 3,
+                                        },
+                                        kind: Number,
+                                        text: "324",
+                                    },
+                                },
+                                value: 324.0,
+                            },
+                        ),
+                    ),
+                    token: Token {
+                        span: Span {
+                            start: 4,
+                            end: 5,
+                        },
+                        kind: Plus,
+                        text: "+",
+                    },
+                    op: Add,
+                    rhs: Binary(
+                        ExprBinary {
+                            lhs: Prefix(
+                                ExprPrefix {
+                                    token: Token {
+                                        span: Span {
+                                            start: 6,
+                                            end: 7,
+                                        },
+                                        kind: Bang,
+                                        text: "!",
+                                    },
+                                    op: Not,
+                                    rhs: Lit(
+                                        Bool(
+                                            LitBool {
+                                                token: Token {
+                                                    span: Span {
+                                                        start: 7,
+                                                        end: 11,
+                                                    },
+                                                    kind: TrueKw,
+                                                    text: "true",
+                                                },
+                                                value: true,
+                                            },
+                                        ),
+                                    ),
+                                },
+                            ),
+                            token: Token {
+                                span: Span {
+                                    start: 11,
+                                    end: 12,
+                                },
+                                kind: Caret,
+                                text: "^",
+                            },
+                            op: Power,
+                            rhs: Lit(
+                                Num(
+                                    LitNum {
+                                        num: Number {
+                                            token: Token {
+                                                span: Span {
+                                                    start: 12,
+                                                    end: 14,
+                                                },
+                                                kind: Number,
+                                                text: "10",
+                                            },
+                                        },
+                                        value: 10.0,
+                                    },
+                                ),
+                            ),
+                        },
+                    ),
+                },
+            ),
+            Semicolon {
+                token: Token {
+                    span: Span {
+                        start: 14,
+                        end: 15,
+                    },
+                    kind: Semicolon,
+                    text: ";",
+                },
+            },
+        ),
+    ],
+)
