@@ -32,6 +32,9 @@ mod lit_num;
 mod lit_str;
 
 mod stmt;
+mod stmt_expr;
+mod stmt_return;
+mod stmt_let;
 
 mod file;
 
@@ -53,4 +56,8 @@ pub use lit_num::LitNum;
 pub use lit_str::LitStr;
 
 pub use stmt::Stmt;
+pub use stmt_expr::StmtExpr;
+pub use stmt_return::StmtReturn;
+pub use stmt_let::StmtLet;
+
 pub use file::File;

@@ -22,6 +22,7 @@ pub enum TokenType {
     Keyword,
     Literal,
     Punct,
+    Token,
 }
 
 impl TokenDefs {

@@ -69,6 +69,7 @@ pub enum TokenKind {
     LogicalAnd,
     LogicalOr,
     Bang,
+    #[doc = "an identifier"]
     Ident,
     Eof,
     Error,
@@ -78,7 +79,7 @@ pub enum TokenKind {
 macro_rules ! K { [fn] => { $ crate :: ast :: TokenKind :: FnKw } ; [let] => { $ crate :: ast :: TokenKind :: LetKw } ; [true] => { $ crate :: ast :: TokenKind :: TrueKw } ; [false] => { $ crate :: ast :: TokenKind :: FalseKw } ; [if] => { $ crate :: ast :: TokenKind :: IfKw } ; [else] => { $ crate :: ast :: TokenKind :: ElseKw } ; [return] => { $ crate :: ast :: TokenKind :: ReturnKw } ; [number] => { $ crate :: ast :: TokenKind :: Number } ; [string] => { $ crate :: ast :: TokenKind :: String } ; [==] => { $ crate :: ast :: TokenKind :: EqEq } ; [!=] => { $ crate :: ast :: TokenKind :: NotEq } ; ['('] => { $ crate :: ast :: TokenKind :: LParen } ; [')'] => { $ crate :: ast :: TokenKind :: RParen } ; ['{'] => { $ crate :: ast :: TokenKind :: LBrace } ; ['}'] => { $ crate :: ast :: TokenKind :: RBrace } ; ['['] => { $ crate :: ast :: TokenKind :: LBracket } ; [']'] => { $ crate :: ast :: TokenKind :: RBracket } ; [:] => { $ crate :: ast :: TokenKind :: Colon } ; [=] => { $ crate :: ast :: TokenKind :: Eq } ; [:=] => { $ crate :: ast :: TokenKind :: Walrus } ; [,] => { $ crate :: ast :: TokenKind :: Comma } ; [.] => { $ crate :: ast :: TokenKind :: Dot } ; [;] => { $ crate :: ast :: TokenKind :: Semicolon } ; [+] => { $ crate :: ast :: TokenKind :: Plus } ; [-] => { $ crate :: ast :: TokenKind :: Minus } ; [*] => { $ crate :: ast :: TokenKind :: Asterisk } ; [/] => { $ crate :: ast :: TokenKind :: Slash } ; [%] => { $ crate :: ast :: TokenKind :: Modulo } ; [^] => { $ crate :: ast :: TokenKind :: Caret } ; [<<] => { $ crate :: ast :: TokenKind :: ShiftLeft } ; [>>] => { $ crate :: ast :: TokenKind :: ShiftRight } ; [~] => { $ crate :: ast :: TokenKind :: Tilde } ; [&] => { $ crate :: ast :: TokenKind :: BitAnd } ; [|] => { $ crate :: ast :: TokenKind :: BitOr } ; [<] => { $ crate :: ast :: TokenKind :: Lt } ; [>] => { $ crate :: ast :: TokenKind :: Gt } ; [<=] => { $ crate :: ast :: TokenKind :: LtEq } ; [>=] => { $ crate :: ast :: TokenKind :: GtEq } ; [&&] => { $ crate :: ast :: TokenKind :: LogicalAnd } ; [||] => { $ crate :: ast :: TokenKind :: LogicalOr } ; [!] => { $ crate :: ast :: TokenKind :: Bang } ; [ident] => { $ crate :: ast :: TokenKind :: Ident } ; [eof] => { $ crate :: ast :: TokenKind :: Eof } ; }
 #[macro_export]
 #[doc = r" A helper macro to get the terminal type"]
-macro_rules ! T { [fn] => { $ crate :: ast :: generated :: FnKw } ; [let] => { $ crate :: ast :: generated :: LetKw } ; [true] => { $ crate :: ast :: generated :: TrueKw } ; [false] => { $ crate :: ast :: generated :: FalseKw } ; [if] => { $ crate :: ast :: generated :: IfKw } ; [else] => { $ crate :: ast :: generated :: ElseKw } ; [return] => { $ crate :: ast :: generated :: ReturnKw } ; [number] => { $ crate :: ast :: generated :: Number } ; [string] => { $ crate :: ast :: generated :: String } ; [==] => { $ crate :: ast :: generated :: EqEq } ; [!=] => { $ crate :: ast :: generated :: NotEq } ; ['('] => { $ crate :: ast :: generated :: LParen } ; [')'] => { $ crate :: ast :: generated :: RParen } ; ['{'] => { $ crate :: ast :: generated :: LBrace } ; ['}'] => { $ crate :: ast :: generated :: RBrace } ; ['['] => { $ crate :: ast :: generated :: LBracket } ; [']'] => { $ crate :: ast :: generated :: RBracket } ; [:] => { $ crate :: ast :: generated :: Colon } ; [=] => { $ crate :: ast :: generated :: Eq } ; [:=] => { $ crate :: ast :: generated :: Walrus } ; [,] => { $ crate :: ast :: generated :: Comma } ; [.] => { $ crate :: ast :: generated :: Dot } ; [;] => { $ crate :: ast :: generated :: Semicolon } ; [+] => { $ crate :: ast :: generated :: Plus } ; [-] => { $ crate :: ast :: generated :: Minus } ; [*] => { $ crate :: ast :: generated :: Asterisk } ; [/] => { $ crate :: ast :: generated :: Slash } ; [%] => { $ crate :: ast :: generated :: Modulo } ; [^] => { $ crate :: ast :: generated :: Caret } ; [<<] => { $ crate :: ast :: generated :: ShiftLeft } ; [>>] => { $ crate :: ast :: generated :: ShiftRight } ; [~] => { $ crate :: ast :: generated :: Tilde } ; [&] => { $ crate :: ast :: generated :: BitAnd } ; [|] => { $ crate :: ast :: generated :: BitOr } ; [<] => { $ crate :: ast :: generated :: Lt } ; [>] => { $ crate :: ast :: generated :: Gt } ; [<=] => { $ crate :: ast :: generated :: LtEq } ; [>=] => { $ crate :: ast :: generated :: GtEq } ; [&&] => { $ crate :: ast :: generated :: LogicalAnd } ; [||] => { $ crate :: ast :: generated :: LogicalOr } ; [!] => { $ crate :: ast :: generated :: Bang } ; }
+macro_rules ! T { [fn] => { $ crate :: ast :: generated :: FnKw } ; [let] => { $ crate :: ast :: generated :: LetKw } ; [true] => { $ crate :: ast :: generated :: TrueKw } ; [false] => { $ crate :: ast :: generated :: FalseKw } ; [if] => { $ crate :: ast :: generated :: IfKw } ; [else] => { $ crate :: ast :: generated :: ElseKw } ; [return] => { $ crate :: ast :: generated :: ReturnKw } ; [number] => { $ crate :: ast :: generated :: Number } ; [string] => { $ crate :: ast :: generated :: String } ; [==] => { $ crate :: ast :: generated :: EqEq } ; [!=] => { $ crate :: ast :: generated :: NotEq } ; ['('] => { $ crate :: ast :: generated :: LParen } ; [')'] => { $ crate :: ast :: generated :: RParen } ; ['{'] => { $ crate :: ast :: generated :: LBrace } ; ['}'] => { $ crate :: ast :: generated :: RBrace } ; ['['] => { $ crate :: ast :: generated :: LBracket } ; [']'] => { $ crate :: ast :: generated :: RBracket } ; [:] => { $ crate :: ast :: generated :: Colon } ; [=] => { $ crate :: ast :: generated :: Eq } ; [:=] => { $ crate :: ast :: generated :: Walrus } ; [,] => { $ crate :: ast :: generated :: Comma } ; [.] => { $ crate :: ast :: generated :: Dot } ; [;] => { $ crate :: ast :: generated :: Semicolon } ; [+] => { $ crate :: ast :: generated :: Plus } ; [-] => { $ crate :: ast :: generated :: Minus } ; [*] => { $ crate :: ast :: generated :: Asterisk } ; [/] => { $ crate :: ast :: generated :: Slash } ; [%] => { $ crate :: ast :: generated :: Modulo } ; [^] => { $ crate :: ast :: generated :: Caret } ; [<<] => { $ crate :: ast :: generated :: ShiftLeft } ; [>>] => { $ crate :: ast :: generated :: ShiftRight } ; [~] => { $ crate :: ast :: generated :: Tilde } ; [&] => { $ crate :: ast :: generated :: BitAnd } ; [|] => { $ crate :: ast :: generated :: BitOr } ; [<] => { $ crate :: ast :: generated :: Lt } ; [>] => { $ crate :: ast :: generated :: Gt } ; [<=] => { $ crate :: ast :: generated :: LtEq } ; [>=] => { $ crate :: ast :: generated :: GtEq } ; [&&] => { $ crate :: ast :: generated :: LogicalAnd } ; [||] => { $ crate :: ast :: generated :: LogicalOr } ; [!] => { $ crate :: ast :: generated :: Bang } ; [ident] => { $ crate :: ast :: generated :: Ident } ; }
 impl TokenKind {
     #[doc = r" Get the display of the TokenKind"]
     pub fn as_str(&self) -> &'static str {
@@ -1189,5 +1190,26 @@ impl parsing::Peek for Bang {
 impl fmt::Display for Bang {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "!")
+    }
+}
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct Ident {
+    pub token: Token,
+}
+impl parsing::Parse for Ident {
+    fn parse(p: &mut parsing::Parser<'_>) -> Result<Self, parsing::ParseError> {
+        let token = p.next()?;
+        match token.kind {
+            TokenKind::Ident => Ok(Self { token }),
+            _ => Err(parsing::ParseError::expected(
+                &token,
+                TokenKind::Ident.as_str(),
+            )),
+        }
+    }
+}
+impl parsing::Peek for Ident {
+    fn peek(peeker: &mut parsing::Peeker<'_>) -> bool {
+        matches!(peeker.nth(0), TokenKind::Ident)
     }
 }

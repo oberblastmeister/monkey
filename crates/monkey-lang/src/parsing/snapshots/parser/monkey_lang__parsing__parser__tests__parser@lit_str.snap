@@ -6,80 +6,86 @@ expression: "parse::<ast::File>(&input).map(|f| f.stmts)"
 Ok(
     [
         Expr(
-            Lit(
-                Str(
-                    LitStr {
-                        token: Token {
-                            span: Span {
-                                start: 0,
-                                end: 19,
+            StmtExpr {
+                expr: Lit(
+                    Str(
+                        LitStr {
+                            token: Token {
+                                span: Span {
+                                    start: 0,
+                                    end: 19,
+                                },
+                                kind: String,
+                                text: "\"this is a lit_str\"",
                             },
-                            kind: String,
-                            text: "\"this is a lit_str\"",
                         },
-                    },
+                    ),
                 ),
-            ),
-            Semicolon {
-                token: Token {
-                    span: Span {
-                        start: 19,
-                        end: 20,
+                semi: Semicolon {
+                    token: Token {
+                        span: Span {
+                            start: 19,
+                            end: 20,
+                        },
+                        kind: Semicolon,
+                        text: ";",
                     },
-                    kind: Semicolon,
-                    text: ";",
                 },
             },
         ),
         Expr(
-            Lit(
-                Str(
-                    LitStr {
-                        token: Token {
-                            span: Span {
-                                start: 21,
-                                end: 38,
+            StmtExpr {
+                expr: Lit(
+                    Str(
+                        LitStr {
+                            token: Token {
+                                span: Span {
+                                    start: 21,
+                                    end: 38,
+                                },
+                                kind: String,
+                                text: "\"another lit str\"",
                             },
-                            kind: String,
-                            text: "\"another lit str\"",
                         },
-                    },
+                    ),
                 ),
-            ),
-            Semicolon {
-                token: Token {
-                    span: Span {
-                        start: 38,
-                        end: 39,
+                semi: Semicolon {
+                    token: Token {
+                        span: Span {
+                            start: 38,
+                            end: 39,
+                        },
+                        kind: Semicolon,
+                        text: ";",
                     },
-                    kind: Semicolon,
-                    text: ";",
                 },
             },
         ),
         Expr(
-            Lit(
-                Str(
-                    LitStr {
-                        token: Token {
-                            span: Span {
-                                start: 40,
-                                end: 53,
+            StmtExpr {
+                expr: Lit(
+                    Str(
+                        LitStr {
+                            token: Token {
+                                span: Span {
+                                    start: 40,
+                                    end: 53,
+                                },
+                                kind: String,
+                                text: "\'another str\'",
                             },
-                            kind: String,
-                            text: "\'another str\'",
                         },
-                    },
+                    ),
                 ),
-            ),
-            Semicolon {
-                token: Token {
-                    span: Span {
-                        start: 53,
-                        end: 54,
+                semi: Semicolon {
+                    token: Token {
+                        span: Span {
+                            start: 53,
+                            end: 54,
+                        },
+                        kind: Semicolon,
+                        text: ";",
                     },
-                    kind: Semicolon,
-                    text: ";",
                 },
             },
         ),

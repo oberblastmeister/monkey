@@ -6,164 +6,176 @@ expression: "parse::<ast::File>(&input).map(|f| f.stmts)"
 Ok(
     [
         Expr(
-            Lit(
-                Bool(
-                    LitBool {
-                        token: Token {
-                            span: Span {
-                                start: 0,
-                                end: 4,
+            StmtExpr {
+                expr: Lit(
+                    Bool(
+                        LitBool {
+                            token: Token {
+                                span: Span {
+                                    start: 0,
+                                    end: 4,
+                                },
+                                kind: TrueKw,
+                                text: "true",
                             },
-                            kind: TrueKw,
-                            text: "true",
+                            value: true,
                         },
-                        value: true,
-                    },
+                    ),
                 ),
-            ),
-            Semicolon {
-                token: Token {
-                    span: Span {
-                        start: 4,
-                        end: 5,
+                semi: Semicolon {
+                    token: Token {
+                        span: Span {
+                            start: 4,
+                            end: 5,
+                        },
+                        kind: Semicolon,
+                        text: ";",
                     },
-                    kind: Semicolon,
-                    text: ";",
                 },
             },
         ),
         Expr(
-            Lit(
-                Bool(
-                    LitBool {
-                        token: Token {
-                            span: Span {
-                                start: 6,
-                                end: 11,
+            StmtExpr {
+                expr: Lit(
+                    Bool(
+                        LitBool {
+                            token: Token {
+                                span: Span {
+                                    start: 6,
+                                    end: 11,
+                                },
+                                kind: FalseKw,
+                                text: "false",
                             },
-                            kind: FalseKw,
-                            text: "false",
+                            value: false,
                         },
-                        value: false,
-                    },
+                    ),
                 ),
-            ),
-            Semicolon {
-                token: Token {
-                    span: Span {
-                        start: 11,
-                        end: 12,
+                semi: Semicolon {
+                    token: Token {
+                        span: Span {
+                            start: 11,
+                            end: 12,
+                        },
+                        kind: Semicolon,
+                        text: ";",
                     },
-                    kind: Semicolon,
-                    text: ";",
                 },
             },
         ),
         Expr(
-            Lit(
-                Bool(
-                    LitBool {
-                        token: Token {
-                            span: Span {
-                                start: 13,
-                                end: 17,
+            StmtExpr {
+                expr: Lit(
+                    Bool(
+                        LitBool {
+                            token: Token {
+                                span: Span {
+                                    start: 13,
+                                    end: 17,
+                                },
+                                kind: TrueKw,
+                                text: "true",
                             },
-                            kind: TrueKw,
-                            text: "true",
+                            value: true,
                         },
-                        value: true,
-                    },
+                    ),
                 ),
-            ),
-            Semicolon {
-                token: Token {
-                    span: Span {
-                        start: 17,
-                        end: 18,
+                semi: Semicolon {
+                    token: Token {
+                        span: Span {
+                            start: 17,
+                            end: 18,
+                        },
+                        kind: Semicolon,
+                        text: ";",
                     },
-                    kind: Semicolon,
-                    text: ";",
                 },
             },
         ),
         Expr(
-            Lit(
-                Bool(
-                    LitBool {
-                        token: Token {
-                            span: Span {
-                                start: 19,
-                                end: 23,
+            StmtExpr {
+                expr: Lit(
+                    Bool(
+                        LitBool {
+                            token: Token {
+                                span: Span {
+                                    start: 19,
+                                    end: 23,
+                                },
+                                kind: TrueKw,
+                                text: "true",
                             },
-                            kind: TrueKw,
-                            text: "true",
+                            value: true,
                         },
-                        value: true,
-                    },
+                    ),
                 ),
-            ),
-            Semicolon {
-                token: Token {
-                    span: Span {
-                        start: 23,
-                        end: 24,
+                semi: Semicolon {
+                    token: Token {
+                        span: Span {
+                            start: 23,
+                            end: 24,
+                        },
+                        kind: Semicolon,
+                        text: ";",
                     },
-                    kind: Semicolon,
-                    text: ";",
                 },
             },
         ),
         Expr(
-            Lit(
-                Bool(
-                    LitBool {
-                        token: Token {
-                            span: Span {
-                                start: 25,
-                                end: 30,
+            StmtExpr {
+                expr: Lit(
+                    Bool(
+                        LitBool {
+                            token: Token {
+                                span: Span {
+                                    start: 25,
+                                    end: 30,
+                                },
+                                kind: FalseKw,
+                                text: "false",
                             },
-                            kind: FalseKw,
-                            text: "false",
+                            value: false,
                         },
-                        value: false,
-                    },
+                    ),
                 ),
-            ),
-            Semicolon {
-                token: Token {
-                    span: Span {
-                        start: 30,
-                        end: 31,
+                semi: Semicolon {
+                    token: Token {
+                        span: Span {
+                            start: 30,
+                            end: 31,
+                        },
+                        kind: Semicolon,
+                        text: ";",
                     },
-                    kind: Semicolon,
-                    text: ";",
                 },
             },
         ),
         Expr(
-            Lit(
-                Bool(
-                    LitBool {
-                        token: Token {
-                            span: Span {
-                                start: 32,
-                                end: 37,
+            StmtExpr {
+                expr: Lit(
+                    Bool(
+                        LitBool {
+                            token: Token {
+                                span: Span {
+                                    start: 32,
+                                    end: 37,
+                                },
+                                kind: FalseKw,
+                                text: "false",
                             },
-                            kind: FalseKw,
-                            text: "false",
+                            value: false,
                         },
-                        value: false,
-                    },
+                    ),
                 ),
-            ),
-            Semicolon {
-                token: Token {
-                    span: Span {
-                        start: 37,
-                        end: 38,
+                semi: Semicolon {
+                    token: Token {
+                        span: Span {
+                            start: 37,
+                            end: 38,
+                        },
+                        kind: Semicolon,
+                        text: ";",
                     },
-                    kind: Semicolon,
-                    text: ";",
                 },
             },
         ),

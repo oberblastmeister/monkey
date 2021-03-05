@@ -48,7 +48,6 @@ impl TokenDefs {
                     #docs
                     #variants,
                 )*
-                Ident,
                 Eof,
                 Error,
             }
@@ -57,7 +56,7 @@ impl TokenDefs {
             #[macro_export]
             macro_rules! K {
                 #([#tts] => { $crate::ast::TokenKind::#variants };)*
-                [ident] => { $crate::ast::TokenKind::Ident };
+                // [ident] => { $crate::ast::TokenKind::Ident };
                 [eof] => { $crate::ast::TokenKind::Eof };
             }
 
@@ -65,6 +64,7 @@ impl TokenDefs {
             /// A helper macro to get the terminal type
             macro_rules! T {
                 #([#tts] => { $crate::ast::generated::#variants };)*
+                // [ident] => { $crate::ast::generated::Ident };
             }
 
             impl TokenKind {
@@ -99,7 +99,6 @@ impl TokenDefs {
             pub fn as_str(&self) -> &'static str {
                 match self {
                     #(#arms,)*
-                    Self::Ident => "ident",
                     Self::Eof => "eof",
                     Self::Error => "error",
                 }
@@ -118,7 +117,7 @@ impl TokenDefs {
 
 impl TokenDef {
     fn get_token_gen(&self) -> TokenGen {
-        let doc = MaybeQuote(self.doc.clone().map(|s| quote! { #[doc = #s] }));
+        let doc = self.doc.clone().map(|s| quote! { #[doc = #s] });
 
         match self.ttype {
             TokenType::Keyword => {
@@ -163,6 +162,21 @@ impl TokenDef {
                     doc,
                 }
             }
+            TokenType::Token => {
+                if self.text.as_ref().is_some() {
+                    panic!("This token tokendefs cannot have text: {:?}", self);
+                }
+
+                let tt = format_ident!("{}", self.variant.as_ref().unwrap().to_snake_case());
+                let variant = format_ident!("{}", self.variant.as_ref().unwrap());
+
+                TokenGen {
+                    text: None,
+                    tt: quote! { #tt },
+                    variant,
+                    doc,
+                }
+            }
         }
     }
 }
@@ -170,7 +184,7 @@ impl TokenDef {
 struct TokenGen {
     text: Option<String>,
     tt: TokenStream,
-    doc: MaybeQuote,
+    doc: Option<TokenStream>,
     variant: Ident,
 }
 
@@ -254,17 +268,4 @@ pub const PREAMBLE: &str = "Generated file, do not edit by hand, see `xtask/src/
 pub fn reformat(text: &str) -> Result<String> {
     let stdout = cmd!("rustfmt").stdin(text).read()?;
     Ok(format!("//! {}\n\n{}\n", PREAMBLE, stdout))
-}
-
-/// Represent optional quoting, just a newtype wrapper around option
-#[derive(Debug, Clone)]
-pub struct MaybeQuote(pub Option<TokenStream>);
-
-impl ToTokens for MaybeQuote {
-    fn to_tokens(&self, tokens: &mut TokenStream) {
-        match &self.0 {
-            Some(new_tokens) => tokens.extend(new_tokens.clone()),
-            None => (),
-        }
-    }
 }

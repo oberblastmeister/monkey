@@ -221,3 +221,8 @@ ttype = "Punct"
 variant = "Bang" 
 text = "!"
 ttype = "Punct"
+
+[[tokens]]
+ttype = "Token"
+doc = "an identifier"
+variant = "Ident"
