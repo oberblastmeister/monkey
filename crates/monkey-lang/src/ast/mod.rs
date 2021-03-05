@@ -35,6 +35,9 @@ mod stmt;
 mod stmt_expr;
 mod stmt_return;
 mod stmt_let;
+mod stmt_if;
+
+mod block;
 
 mod file;
 
@@ -59,5 +62,8 @@ pub use stmt::Stmt;
 pub use stmt_expr::StmtExpr;
 pub use stmt_return::StmtReturn;
 pub use stmt_let::StmtLet;
+pub use stmt_if::StmtIf;
+
+pub use block::Block;
 
 pub use file::File;
