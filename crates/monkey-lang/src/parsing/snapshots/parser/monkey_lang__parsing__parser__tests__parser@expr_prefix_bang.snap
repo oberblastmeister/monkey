@@ -6,8 +6,8 @@ expression: "parse::<ast::File>(&input).map(|f| f.stmts)"
 Ok(
     [
         Expr(
-            Binary(
-                ExprBinary {
+            Infix(
+                ExprInfix {
                     lhs: Lit(
                         Num(
                             LitNum {
@@ -34,8 +34,8 @@ Ok(
                         text: "+",
                     },
                     op: Add,
-                    rhs: Binary(
-                        ExprBinary {
+                    rhs: Infix(
+                        ExprInfix {
                             lhs: Prefix(
                                 ExprPrefix {
                                     token: Token {
@@ -46,7 +46,7 @@ Ok(
                                         kind: Bang,
                                         text: "!",
                                     },
-                                    op: Not,
+                                    op: LogicalNot,
                                     rhs: Lit(
                                         Bool(
                                             LitBool {

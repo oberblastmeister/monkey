@@ -1,4 +1,4 @@
-use std::collections::VecDeque;
+use std::{borrow::Cow, collections::VecDeque};
 
 use super::{Lexer, Parse, ParseError, ParseErrorKind, ParseResult, Peek};
 use crate::ast::{self, Token, TokenKind};
@@ -139,6 +139,20 @@ impl<'a> Parser<'a> {
             Err(e) => Err(e),
             Ok(t) => Ok(t),
         }
+    }
+
+    /// Get the span at the given position.
+    pub fn tok_at(&mut self, n: usize) -> Result<Cow<'_, Token>, ParseError> {
+        Ok(if let Some(t) = self.peeker.at(n)? {
+            Cow::Borrowed(t)
+        } else {
+            let t = Token {
+                kind: TokenKind::Eof,
+                text: "".into(),
+                span: Span::new(0, 0),
+            };
+            Cow::Owned(t)
+        })
     }
 
     /// Peek the token kind at the given position.

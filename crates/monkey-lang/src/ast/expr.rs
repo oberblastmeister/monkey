@@ -3,8 +3,9 @@ use monkey_util::{Precedence, PrecedenceType};
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum Expr {
-    Binary(Box<ast::ExprBinary>),
+    Infix(Box<ast::ExprInfix>),
     Prefix(Box<ast::ExprPrefix>),
+    Postfix(Box<ast::ExprPostfix>),
     Lit(ast::Lit),
 }
 
@@ -100,7 +101,7 @@ fn expr_infix(
 ) -> ParseResult<Expr> {
     let rhs = expr_bp(p, r_bp)?;
 
-    Ok(Expr::Binary(Box::new(ast::ExprBinary {
+    Ok(Expr::Infix(Box::new(ast::ExprInfix {
         lhs,
         op,
         rhs,

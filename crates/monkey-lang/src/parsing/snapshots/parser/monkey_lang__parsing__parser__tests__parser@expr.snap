@@ -6,10 +6,10 @@ expression: "parse::<ast::File>(&input).map(|f| f.stmts)"
 Ok(
     [
         Expr(
-            Binary(
-                ExprBinary {
-                    lhs: Binary(
-                        ExprBinary {
+            Infix(
+                ExprInfix {
+                    lhs: Infix(
+                        ExprInfix {
                             lhs: Lit(
                                 Num(
                                     LitNum {
@@ -95,10 +95,10 @@ Ok(
             },
         ),
         Expr(
-            Binary(
-                ExprBinary {
-                    lhs: Binary(
-                        ExprBinary {
+            Infix(
+                ExprInfix {
+                    lhs: Infix(
+                        ExprInfix {
                             lhs: Lit(
                                 Num(
                                     LitNum {
@@ -184,12 +184,12 @@ Ok(
             },
         ),
         Expr(
-            Binary(
-                ExprBinary {
-                    lhs: Binary(
-                        ExprBinary {
-                            lhs: Binary(
-                                ExprBinary {
+            Infix(
+                ExprInfix {
+                    lhs: Infix(
+                        ExprInfix {
+                            lhs: Infix(
+                                ExprInfix {
                                     lhs: Lit(
                                         Num(
                                             LitNum {
@@ -303,8 +303,8 @@ Ok(
             },
         ),
         Expr(
-            Binary(
-                ExprBinary {
+            Infix(
+                ExprInfix {
                     lhs: Lit(
                         Num(
                             LitNum {
@@ -331,8 +331,8 @@ Ok(
                         text: "+",
                     },
                     op: Add,
-                    rhs: Binary(
-                        ExprBinary {
+                    rhs: Infix(
+                        ExprInfix {
                             lhs: Lit(
                                 Num(
                                     LitNum {
@@ -392,8 +392,8 @@ Ok(
             },
         ),
         Expr(
-            Binary(
-                ExprBinary {
+            Infix(
+                ExprInfix {
                     lhs: Lit(
                         Num(
                             LitNum {
@@ -420,8 +420,8 @@ Ok(
                         text: "*",
                     },
                     op: Mul,
-                    rhs: Binary(
-                        ExprBinary {
+                    rhs: Infix(
+                        ExprInfix {
                             lhs: Lit(
                                 Num(
                                     LitNum {
@@ -474,76 +474,6 @@ Ok(
                     span: Span {
                         start: 81,
                         end: 82,
-                    },
-                    kind: Semicolon,
-                    text: ";",
-                },
-            },
-        ),
-        Expr(
-            Binary(
-                ExprBinary {
-                    lhs: Lit(
-                        Num(
-                            LitNum {
-                                num: Number {
-                                    token: Token {
-                                        span: Span {
-                                            start: 83,
-                                            end: 86,
-                                        },
-                                        kind: Number,
-                                        text: "324",
-                                    },
-                                },
-                                value: 324.0,
-                            },
-                        ),
-                    ),
-                    token: Token {
-                        span: Span {
-                            start: 87,
-                            end: 88,
-                        },
-                        kind: Plus,
-                        text: "+",
-                    },
-                    op: Add,
-                    rhs: Prefix(
-                        ExprPrefix {
-                            token: Token {
-                                span: Span {
-                                    start: 89,
-                                    end: 90,
-                                },
-                                kind: Bang,
-                                text: "!",
-                            },
-                            op: Not,
-                            rhs: Lit(
-                                Bool(
-                                    LitBool {
-                                        token: Token {
-                                            span: Span {
-                                                start: 90,
-                                                end: 94,
-                                            },
-                                            kind: TrueKw,
-                                            text: "true",
-                                        },
-                                        value: true,
-                                    },
-                                ),
-                            ),
-                        },
-                    ),
-                },
-            ),
-            Semicolon {
-                token: Token {
-                    span: Span {
-                        start: 94,
-                        end: 95,
                     },
                     kind: Semicolon,
                     text: ";",

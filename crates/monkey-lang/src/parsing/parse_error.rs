@@ -12,6 +12,9 @@ pub enum ParseErrorKind {
     #[error("Unexpected end of file")]
     Eof,
 
+    #[error("Failed to parse: {message}")]
+    Message { message: &'static str },
+
     #[error("Expected eof")]
     ExpectedEof { actual: &'static str },
 
@@ -59,6 +62,17 @@ impl ParseError {
         }
     }
 
+    pub fn msg<S, Q>(spanned: &Q, msg: &'static str) -> ParseError
+    where
+        S: Spanned,
+        Q: Borrow<S>,
+    {
+        ParseError {
+            span: spanned.borrow().span(),
+            kind: ParseErrorKind::Message { message: msg },
+        }
+    }
+
     pub fn kind(&self) -> &ParseErrorKind {
         &self.kind
     }
@@ -68,7 +82,8 @@ impl ParseError {
     }
 
     /// Construct an expectation error.
-    pub(crate) fn expected(actual: &Token, expected: &'static str) -> ParseError {
+    pub(crate) fn expected(actual: &Token, expected: &'static str) -> ParseError
+    {
         Self::new(
             actual,
             ParseErrorKind::Expected {
