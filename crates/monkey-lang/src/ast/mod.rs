@@ -25,6 +25,7 @@ mod expr_lit;
 mod expr_infix;
 mod expr_prefix;
 mod expr_postfix;
+mod expr_call;
 
 mod lit;
 mod lit_bool;
@@ -53,6 +54,7 @@ pub use expr_lit::ExprLit;
 pub use expr_infix::ExprInfix;
 pub use expr_prefix::ExprPrefix;
 pub use expr_postfix::ExprPostfix;
+pub use expr_call::ExprCall;
 
 pub use op::Op;
 
