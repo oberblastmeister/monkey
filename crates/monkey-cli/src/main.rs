@@ -1,10 +1,10 @@
 use std::{fs, path::PathBuf};
 
 use clap::Clap;
-use rustyline::{Editor, error::ReadlineError};
 use directories_next::ProjectDirs;
+use rustyline::{error::ReadlineError, Editor};
 
-use monkey_lang::lex;
+use monkey_lang::{ast, parse};
 
 #[derive(Clap)]
 struct Opt {
@@ -41,20 +41,26 @@ fn repl() {
         match readline {
             Ok(line) => {
                 rl.add_history_entry(line.as_str());
-                let lexed = lex(&line);
-                println!("{:?}", lexed);
-            },
+                let parsed = match parse::<ast::Stmt>(&line) {
+                    Ok(parsed) => parsed,
+                    Err(e) => {
+                        println!("Parsing failed:\n{:#?}", e);
+                        continue;
+                    }
+                };
+                println!("{:#?}", parsed);
+            }
             Err(ReadlineError::Interrupted) => {
                 println!("CTRL-C");
-                break
-            },
+                break;
+            }
             Err(ReadlineError::Eof) => {
                 println!("CTRL-D");
-                break
-            },
+                break;
+            }
             Err(err) => {
                 println!("Error: {:?}", err);
-                break
+                break;
             }
         }
     }

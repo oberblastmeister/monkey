@@ -9,3 +9,5 @@ pub struct ExprPrefix {
     /// The right hand side of the expression
     pub rhs: ast::Expr,
 }
+
+expr_parse!(Prefix, ExprPrefix, "prefix expression");
