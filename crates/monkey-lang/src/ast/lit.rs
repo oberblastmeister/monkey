@@ -1,27 +1,30 @@
-use crate::{ast, Parse, ParseError, ParseResult, Parser, Peek, Peeker, Spanned};
+use crate::{ast, Parse, ParseError, ParseResult, Parser, Peek, Peeker};
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum Lit {
     Bool(ast::LitBool),
     Num(ast::LitNum),
     Str(ast::LitStr),
+    Fn(Box<ast::LitFn>),
 }
 
 impl Parse for Lit {
     fn parse(p: &mut Parser) -> ParseResult<Self> {
-        match p.nth(0)? {
-            K![true] | K![false] => return Ok(Lit::Bool(p.parse()?)),
-            K![number] => return Ok(Lit::Num(p.parse()?)),
-            K![string] => return Ok(Lit::Str(p.parse()?)),
-            _ => (),
-        }
-
-        Err(ParseError::expected(&p.next()?, "expected literal"))
+        Ok(match p.nth(0)? {
+            K![true] | K![false] => Lit::Bool(p.parse()?),
+            K![number] => Lit::Num(p.parse()?),
+            K![string] => Lit::Str(p.parse()?),
+            K![fn] => Lit::Fn(p.parse()?),
+            _ => return Err(ParseError::expected(&p.next()?, "expected literal")),
+        })
     }
 }
 
 impl Peek for Lit {
     fn peek(p: &mut Peeker) -> bool {
-        p.peek::<ast::LitBool>() | p.peek::<ast::LitStr>() | p.peek::<ast::LitNum>()
+        p.peek::<ast::LitFn>()
+            | p.peek::<ast::LitBool>()
+            | p.peek::<ast::LitStr>()
+            | p.peek::<ast::LitNum>()
     }
 }

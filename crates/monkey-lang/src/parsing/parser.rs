@@ -1,7 +1,7 @@
 use std::{borrow::Cow, collections::VecDeque};
 
 use super::{Lexer, Parse, ParseError, ParseErrorKind, ParseResult, Peek};
-use crate::ast::{self, Token, TokenKind};
+use crate::ast::{Token, TokenKind};
 use crate::Span;
 
 /// Construct used to peek a parser.
@@ -29,7 +29,7 @@ impl<'a> Peeker<'a> {
                 Some(t) => t.kind,
                 None => TokenKind::Eof,
             },
-            Err(error) => TokenKind::Error,
+            Err(_) => TokenKind::Error,
         }
     }
 
@@ -194,6 +194,7 @@ mod tests {
     use std::fs;
 
     use super::*;
+    use crate::ast;
 
     #[test]
     fn parser() {

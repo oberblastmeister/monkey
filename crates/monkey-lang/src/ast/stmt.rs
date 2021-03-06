@@ -1,11 +1,11 @@
-use crate::{ast, Parse, ParseError, ParseResult, Parser, Peek, Peeker, Spanned};
+use crate::{ast, Parse, ParseResult, Parser};
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum Stmt {
-    Expr(Box<ast::StmtExpr>),
-    Return(Box<ast::StmtReturn>),
-    Let(Box<ast::StmtLet>),
-    If(Box<ast::StmtIf>),
+    Expr(ast::StmtExpr),
+    Return(ast::StmtReturn),
+    Let(ast::StmtLet),
+    If(ast::StmtIf),
 }
 
 impl Parse for Stmt {

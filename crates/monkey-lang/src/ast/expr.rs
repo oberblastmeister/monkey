@@ -1,4 +1,4 @@
-use crate::{ast, Parse, ParseError, ParseResult, Parser, Peek, Peeker, Spanned};
+use crate::{ast, Parse, ParseError, ParseResult, Parser, Peek, Peeker};
 use monkey_util::{Precedence, PrecedenceType};
 
 #[derive(Debug, Clone, PartialEq)]
@@ -77,7 +77,7 @@ struct ExprEnd;
 
 impl Peek for ExprEnd {
     fn peek(p: &mut Peeker) -> bool {
-        matches!(p.nth(0), K![eof] | K![;] | K![')'] | K!['{'])
+        matches!(p.nth(0), K![eof] | K![;] | K![')'] | K!['{'] | K![,])
     }
 }
 

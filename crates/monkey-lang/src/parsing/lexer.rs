@@ -279,6 +279,7 @@ impl<'a> Lexer<'a> {
 
 fn keyword(text: &str) -> Option<TokenKind> {
     Some(match text {
+        "fn" => K![fn],
         "let" => K![let],
         "return" => K![return],
         "if" => K![if],

@@ -4,7 +4,7 @@ use eyre::Result;
 use heck::{CamelCase, SnakeCase};
 use proc_macro2::{Punct, Spacing, TokenStream};
 use quote::quote;
-use quote::{format_ident, ToTokens};
+use quote::format_ident;
 use syn::Ident;
 use xshell::{cmd, read_file, write_file};
 

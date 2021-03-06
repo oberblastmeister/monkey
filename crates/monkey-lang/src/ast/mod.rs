@@ -30,6 +30,7 @@ mod lit;
 mod lit_bool;
 mod lit_num;
 mod lit_str;
+mod lit_fn;
 
 mod stmt;
 mod stmt_expr;
@@ -57,6 +58,7 @@ pub use lit::Lit;
 pub use lit_bool::LitBool;
 pub use lit_num::LitNum;
 pub use lit_str::LitStr;
+pub use lit_fn::LitFn;
 
 pub use stmt::Stmt;
 pub use stmt_expr::StmtExpr;
