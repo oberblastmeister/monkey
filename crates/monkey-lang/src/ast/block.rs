@@ -14,10 +14,11 @@ impl Parse for Block {
         let mut stmts = Vec::new();
 
         loop {
-            stmts.push(p.parse()?);
-            if p.is_eof()? {
+            if p.is_eof()? || p.peek::<BlockEnd>() {
                 break;
             }
+
+            stmts.push(p.parse()?);
         }
 
         let close_bracket = p.parse()?;
@@ -27,5 +28,13 @@ impl Parse for Block {
             stmts,
             close_bracket,
         })
+    }
+}
+
+struct BlockEnd;
+
+impl Peek for BlockEnd {
+    fn peek(p: &mut Peeker) -> bool {
+        matches!(p.nth(0), K!['}'])
     }
 }

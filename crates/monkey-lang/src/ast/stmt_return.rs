@@ -4,6 +4,7 @@ use crate::{Parse, ParseResult, Parser, ast};
 pub struct StmtReturn {
     return_token: T![return],
     expr: ast::Expr,
+    semi: T![;],
 }
 
 impl Parse for StmtReturn {
@@ -11,6 +12,7 @@ impl Parse for StmtReturn {
         Ok(StmtReturn {
             return_token: p.parse()?,
             expr: p.parse()?,
+            semi: p.parse()?,
         })
     }
 }

@@ -2,9 +2,10 @@ use crate::{ast, Parse, ParseError, ParseResult, Parser, Peek, Peeker, Spanned};
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum Stmt {
-    Expr(ast::StmtExpr),
-    Return(ast::StmtReturn),
-    Let(ast::StmtLet),
+    Expr(Box<ast::StmtExpr>),
+    Return(Box<ast::StmtReturn>),
+    Let(Box<ast::StmtLet>),
+    If(Box<ast::StmtIf>),
 }
 
 impl Parse for Stmt {
@@ -12,6 +13,7 @@ impl Parse for Stmt {
         let parsed = match p.nth(0)? {
             K![return] => Stmt::Return(p.parse()?),
             K![let] => Stmt::Let(p.parse()?),
+            K![if] => Stmt::If(p.parse()?),
             _ => Stmt::Expr(p.parse()?),
         };
 

@@ -3,7 +3,7 @@ use crate::{ast, Parse, ParseError, ParseResult, Parser, Peek, Peeker, Spanned};
 #[derive(Debug, Clone, PartialEq)]
 pub struct StmtIf {
     if_token: T![if],
-    condition: Condition,
+    condition: ast::Expr,
     block: ast::Block,
     next: Option<IfBranch>,
 }
@@ -30,7 +30,7 @@ impl Parse for IfBranch {
         assert_eq!(p.nth(0).unwrap(), K![else]);
 
         Ok(match p.nth(1)? {
-            K![else] => IfBranch::ElseIf(p.parse()?),
+            K![if] => IfBranch::ElseIf(p.parse()?),
             _ => IfBranch::Else(p.parse()?),
         })
     }
@@ -46,7 +46,7 @@ impl Peek for IfBranch {
 pub struct ElseIfBranch {
     else_token: T![else],
     if_token: T![if],
-    condition: Condition,
+    condition: ast::Expr,
     block: ast::Block,
     next: Option<IfBranch>,
 }
@@ -87,22 +87,5 @@ impl Parse for ElseBranch {
 impl Peek for ElseBranch {
     fn peek(p: &mut Peeker) -> bool {
         matches!(p.nth(0), K![else]) && !matches!(p.nth(1), K![if])
-    }
-}
-
-#[derive(Debug, Clone, PartialEq)]
-pub struct Condition {
-    open_paren: T!['('],
-    expr: ast::Expr,
-    close_paren: T![')'],
-}
-
-impl Parse for Condition {
-    fn parse(p: &mut Parser) -> ParseResult<Self> {
-        Ok(Condition {
-            open_paren: p.parse()?,
-            expr: p.parse()?,
-            close_paren: p.parse()?,
-        })
     }
 }

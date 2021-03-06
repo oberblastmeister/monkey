@@ -1,0 +1,88 @@
+---
+source: crates/monkey-lang/src/parsing/parser.rs
+expression: "parse::<ast::File>(&input).map(|f| f.stmts)"
+
+---
+Ok(
+    [
+        Return(
+            StmtReturn {
+                return_token: ReturnKw {
+                    token: Token {
+                        span: Span {
+                            start: 0,
+                            end: 6,
+                        },
+                        kind: ReturnKw,
+                        text: "return",
+                    },
+                },
+                expr: Lit(
+                    Num(
+                        LitNum {
+                            num: Number {
+                                token: Token {
+                                    span: Span {
+                                        start: 7,
+                                        end: 11,
+                                    },
+                                    kind: Number,
+                                    text: "1243",
+                                },
+                            },
+                            value: 1243.0,
+                        },
+                    ),
+                ),
+                semi: Semicolon {
+                    token: Token {
+                        span: Span {
+                            start: 11,
+                            end: 12,
+                        },
+                        kind: Semicolon,
+                        text: ";",
+                    },
+                },
+            },
+        ),
+        Return(
+            StmtReturn {
+                return_token: ReturnKw {
+                    token: Token {
+                        span: Span {
+                            start: 13,
+                            end: 19,
+                        },
+                        kind: ReturnKw,
+                        text: "return",
+                    },
+                },
+                expr: Lit(
+                    Str(
+                        LitStr {
+                            token: Token {
+                                span: Span {
+                                    start: 20,
+                                    end: 35,
+                                },
+                                kind: String,
+                                text: "\"return string\"",
+                            },
+                        },
+                    ),
+                ),
+                semi: Semicolon {
+                    token: Token {
+                        span: Span {
+                            start: 35,
+                            end: 36,
+                        },
+                        kind: Semicolon,
+                        text: ";",
+                    },
+                },
+            },
+        ),
+    ],
+)
