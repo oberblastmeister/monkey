@@ -1,0 +1,201 @@
+---
+source: crates/monkey-lang/src/parsing/parser.rs
+expression: "parse::<ast::File>(&input).map(|f| f.stmts)"
+
+---
+Ok(
+    [
+        Let(
+            StmtLet {
+                let_token: LetKw {
+                    token: Token {
+                        span: Span {
+                            start: 0,
+                            end: 3,
+                        },
+                        kind: LetKw,
+                        text: "let",
+                    },
+                },
+                ident: Ident {
+                    token: Token {
+                        span: Span {
+                            start: 4,
+                            end: 7,
+                        },
+                        kind: Ident,
+                        text: "add",
+                    },
+                },
+                eq: Eq {
+                    token: Token {
+                        span: Span {
+                            start: 8,
+                            end: 9,
+                        },
+                        kind: Eq,
+                        text: "=",
+                    },
+                },
+                expr: Lit(
+                    Fn(
+                        LitFn {
+                            fn_token: FnKw {
+                                token: Token {
+                                    span: Span {
+                                        start: 10,
+                                        end: 12,
+                                    },
+                                    kind: FnKw,
+                                    text: "fn",
+                                },
+                            },
+                            parameters: Parameters(
+                                List {
+                                    open_delimit: LParen {
+                                        token: Token {
+                                            span: Span {
+                                                start: 12,
+                                                end: 13,
+                                            },
+                                            kind: LParen,
+                                            text: "(",
+                                        },
+                                    },
+                                    inner: [
+                                        Ident {
+                                            token: Token {
+                                                span: Span {
+                                                    start: 13,
+                                                    end: 14,
+                                                },
+                                                kind: Ident,
+                                                text: "x",
+                                            },
+                                        },
+                                        Ident {
+                                            token: Token {
+                                                span: Span {
+                                                    start: 16,
+                                                    end: 17,
+                                                },
+                                                kind: Ident,
+                                                text: "y",
+                                            },
+                                        },
+                                    ],
+                                    close_delimit: RParen {
+                                        token: Token {
+                                            span: Span {
+                                                start: 17,
+                                                end: 18,
+                                            },
+                                            kind: RParen,
+                                            text: ")",
+                                        },
+                                    },
+                                    sep: PhantomData,
+                                },
+                            ),
+                            body: Block {
+                                open_bracket: LBrace {
+                                    token: Token {
+                                        span: Span {
+                                            start: 19,
+                                            end: 20,
+                                        },
+                                        kind: LBrace,
+                                        text: "{",
+                                    },
+                                },
+                                stmts: [
+                                    Return(
+                                        StmtReturn {
+                                            return_token: ReturnKw {
+                                                token: Token {
+                                                    span: Span {
+                                                        start: 25,
+                                                        end: 31,
+                                                    },
+                                                    kind: ReturnKw,
+                                                    text: "return",
+                                                },
+                                            },
+                                            expr: Infix(
+                                                ExprInfix {
+                                                    lhs: Named(
+                                                        Ident {
+                                                            token: Token {
+                                                                span: Span {
+                                                                    start: 32,
+                                                                    end: 33,
+                                                                },
+                                                                kind: Ident,
+                                                                text: "x",
+                                                            },
+                                                        },
+                                                    ),
+                                                    token: Token {
+                                                        span: Span {
+                                                            start: 34,
+                                                            end: 35,
+                                                        },
+                                                        kind: Plus,
+                                                        text: "+",
+                                                    },
+                                                    op: Add,
+                                                    rhs: Named(
+                                                        Ident {
+                                                            token: Token {
+                                                                span: Span {
+                                                                    start: 36,
+                                                                    end: 37,
+                                                                },
+                                                                kind: Ident,
+                                                                text: "y",
+                                                            },
+                                                        },
+                                                    ),
+                                                },
+                                            ),
+                                            semi: Semicolon {
+                                                token: Token {
+                                                    span: Span {
+                                                        start: 37,
+                                                        end: 38,
+                                                    },
+                                                    kind: Semicolon,
+                                                    text: ";",
+                                                },
+                                            },
+                                        },
+                                    ),
+                                ],
+                                close_bracket: RBrace {
+                                    token: Token {
+                                        span: Span {
+                                            start: 39,
+                                            end: 40,
+                                        },
+                                        kind: RBrace,
+                                        text: "}",
+                                    },
+                                },
+                            },
+                        },
+                    ),
+                ),
+                semi: Semicolon {
+                    token: Token {
+                        span: Span {
+                            start: 40,
+                            end: 41,
+                        },
+                        kind: Semicolon,
+                        text: ";",
+                    },
+                },
+            },
+        ),
+    ],
+)

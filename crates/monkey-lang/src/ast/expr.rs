@@ -7,6 +7,7 @@ pub enum Expr {
     Prefix(Box<ast::ExprPrefix>),
     Postfix(Box<ast::ExprPostfix>),
     Lit(ast::Lit),
+    Named(T![ident]),
 }
 
 impl Parse for Expr {
@@ -22,30 +23,15 @@ fn expr(p: &mut Parser) -> ParseResult<Expr> {
 }
 
 fn expr_bp(p: &mut Parser, min_bp: Precedence) -> ParseResult<Expr> {
-    let mut lhs = match p.nth(0)? {
-        K!['('] => expr_paren(p)?,
-        _ if p.peek::<ast::Lit>() => Expr::Lit(p.parse()?),
-        k => {
-            let next = p.next()?;
-
-            let op = ast::Op::from_kind(k)
-                .ok_or_else(|| ParseError::expected(&next, "Expected operator"))?;
-
-            match op.precedence() {
-                PrecedenceType::Prefix((), r_bp) => expr_prefix(p, r_bp, op, next)?,
-                _ => return Err(ParseError::expected(&next, "Expeced prefix operator")),
-            }
-        }
-    };
+    let mut lhs = expr_lhs(p)?;
 
     loop {
         if p.peek::<ExprEnd>() {
             break;
         };
 
-        let op = ast::Op::from_peeker(p.peeker()).ok_or_else(|| {
-            ParseError::expected(&p.next().unwrap(), "Expected an operator")
-        })?;
+        let op = ast::Op::from_peeker(p.peeker())
+            .ok_or_else(|| ParseError::expected(&p.next().unwrap(), "Expected an operator"))?;
 
         let binding_power = op.precedence();
 
@@ -71,6 +57,35 @@ fn expr_bp(p: &mut Parser, min_bp: Precedence) -> ParseResult<Expr> {
     }
 
     Ok(lhs)
+}
+
+fn expr_lhs(p: &mut Parser) -> ParseResult<Expr> {
+    Ok(match p.nth(0)? {
+        K!['('] => expr_paren(p)?,
+        K![ident] => Expr::Named(p.parse()?),
+        _ if p.peek::<ast::Lit>() => Expr::Lit(p.parse()?),
+        k => {
+            let next = p.next()?;
+
+            let op = ast::Op::from_kind(k)
+                .ok_or_else(|| ParseError::expected(&next, "Expected operator"))?;
+
+            match op.precedence() {
+                PrecedenceType::Prefix((), r_bp) => expr_prefix(p, r_bp, op, next)?,
+                _ => return Err(ParseError::expected(&next, "Expeced prefix operator")),
+            }
+        }
+    })
+}
+
+fn expr_with_ident(p: &mut Parser) -> ParseResult<Expr> {
+    let curr = p.nth(0)?;
+    assert_eq!(curr, K![ident]);
+
+    Ok(match p.nth(1)? {
+        K!['('] => todo!(),
+        _ => Expr::Named(p.parse()?),
+    })
 }
 
 struct ExprEnd;

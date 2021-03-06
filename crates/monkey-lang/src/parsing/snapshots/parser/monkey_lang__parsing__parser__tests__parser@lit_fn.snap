@@ -51,7 +51,7 @@ Ok(
                                 },
                             },
                             parameters: Parameters(
-                                ParamList {
+                                List {
                                     open_delimit: LParen {
                                         token: Token {
                                             span: Span {
@@ -253,7 +253,7 @@ Ok(
                                 },
                             },
                             parameters: Parameters(
-                                ParamList {
+                                List {
                                     open_delimit: LParen {
                                         token: Token {
                                             span: Span {
