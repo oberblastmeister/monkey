@@ -1,7 +1,11 @@
 #[macro_use]
 pub mod ast;
-mod spanned;
+mod evaluating;
 mod parsing;
+mod spanned;
 
-pub(crate) use spanned::{Spanned, Span};
-pub use parsing::{ParseErrorKind, ParseError, ParseResult, Parse, Peek, Peeker, Parser, lex, parse};
+pub use evaluating::{Eval, EvalError, EvalResult, Value};
+pub use parsing::{
+    lex, parse, Parse, ParseError, ParseErrorKind, ParseResult, Parser, Peek, Peeker,
+};
+pub(crate) use spanned::{Span, Spanned};
