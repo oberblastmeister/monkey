@@ -142,11 +142,11 @@ Ok(
                                         LitStr {
                                             token: Token {
                                                 span: Span {
-                                                    start: 47,
-                                                    end: 52,
+                                                    start: 48,
+                                                    end: 51,
                                                 },
                                                 kind: String,
-                                                text: "\"adf\"",
+                                                text: "adf",
                                             },
                                         },
                                     ),

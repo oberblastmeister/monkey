@@ -63,11 +63,11 @@ Ok(
                         LitStr {
                             token: Token {
                                 span: Span {
-                                    start: 20,
-                                    end: 35,
+                                    start: 21,
+                                    end: 34,
                                 },
                                 kind: String,
-                                text: "\"return string\"",
+                                text: "return string",
                             },
                         },
                     ),

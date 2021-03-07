@@ -345,11 +345,11 @@ Ok(
                                                                             LitStr {
                                                                                 token: Token {
                                                                                     span: Span {
-                                                                                        start: 110,
-                                                                                        end: 117,
+                                                                                        start: 111,
+                                                                                        end: 116,
                                                                                     },
                                                                                     kind: String,
-                                                                                    text: "\"hello\"",
+                                                                                    text: "hello",
                                                                                 },
                                                                             },
                                                                         ),

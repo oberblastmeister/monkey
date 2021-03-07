@@ -91,6 +91,12 @@ impl<'a> Source<'a> {
         self.bump_pos();
         res
     }
+
+    fn skip_next(&mut self) -> Option<char> {
+        let next = self.next()?;
+        self.bump_pos();
+        Some(next)
+    }
 }
 
 impl Spanned for Source<'_> {
@@ -247,10 +253,16 @@ impl<'a> Lexer<'a> {
     }
 
     fn string_lit(&mut self, delimit: char) -> ParseResult<Token> {
-        self.source
-            .find(|c| *c == delimit)
-            .eof(|| self.source.bump_span())?;
+        self.source.bump_pos(); // get rid opening "
+        self.source.accept_while(|c| c != delimit);
         let (span, text) = self.source.bump();
+        if let Some(c) = self.source.skip_next() {
+            if c != delimit {
+                panic!("This  should not happen because of accept_while")
+            }
+        } else {
+            panic!("Could not find end of string") // fix error reporting
+        }
         Ok(Token {
             span,
             text,

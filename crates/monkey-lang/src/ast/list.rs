@@ -25,7 +25,7 @@ where
 {
     fn parse(p: &mut Parser) -> ParseResult<Self> {
         let open_delimit = p.parse()?;
-        let mut inner: Vec<T> = Vec::new();
+        let mut inner = Vec::new();
 
         let close_delimit = if p.peek::<DC>() {
             p.parse()?
