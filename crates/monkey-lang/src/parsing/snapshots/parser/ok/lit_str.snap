@@ -1,0 +1,96 @@
+---
+source: crates/monkey-lang/src/parsing/tests.rs
+expression: actual
+input_file: crates/monkey-lang/src/parsing/snapshots/parser/ok/lit_str.mk
+
+---
+Ok(
+    File {
+        stmts: [
+            Expr(
+                StmtExpr {
+                    expr: Lit(
+                        Str(
+                            LitStr {
+                                token: Token {
+                                    span: Span {
+                                        start: 1,
+                                        end: 18,
+                                    },
+                                    kind: String,
+                                    text: "this is a lit_str",
+                                },
+                            },
+                        ),
+                    ),
+                    semi: Semicolon {
+                        token: Token {
+                            span: Span {
+                                start: 19,
+                                end: 20,
+                            },
+                            kind: Semicolon,
+                            text: ";",
+                        },
+                    },
+                },
+            ),
+            Expr(
+                StmtExpr {
+                    expr: Lit(
+                        Str(
+                            LitStr {
+                                token: Token {
+                                    span: Span {
+                                        start: 22,
+                                        end: 37,
+                                    },
+                                    kind: String,
+                                    text: "another lit str",
+                                },
+                            },
+                        ),
+                    ),
+                    semi: Semicolon {
+                        token: Token {
+                            span: Span {
+                                start: 38,
+                                end: 39,
+                            },
+                            kind: Semicolon,
+                            text: ";",
+                        },
+                    },
+                },
+            ),
+            Expr(
+                StmtExpr {
+                    expr: Lit(
+                        Str(
+                            LitStr {
+                                token: Token {
+                                    span: Span {
+                                        start: 41,
+                                        end: 52,
+                                    },
+                                    kind: String,
+                                    text: "another str",
+                                },
+                            },
+                        ),
+                    ),
+                    semi: Semicolon {
+                        token: Token {
+                            span: Span {
+                                start: 53,
+                                end: 54,
+                            },
+                            kind: Semicolon,
+                            text: ";",
+                        },
+                    },
+                },
+            ),
+        ],
+    },
+)

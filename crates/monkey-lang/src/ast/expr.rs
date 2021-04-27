@@ -126,6 +126,9 @@ struct ExprEnd;
 
 impl Peek for ExprEnd {
     fn peek(p: &mut Peeker) -> bool {
-        matches!(p.nth(0), K![eof] | K![;] | K![')'] | K!['{'] | K![,])
+        matches!(
+            p.nth(0),
+            K![eof] | K![;] | K![')'] | K!['{'] | K![,] | K![']']
+        )
     }
 }

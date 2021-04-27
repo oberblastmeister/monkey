@@ -42,7 +42,7 @@ impl ToEof for Option<char> {
     }
 }
 
-#[derive(Error, Debug, Clone)]
+#[derive(Error, Debug, Clone, PartialEq, Eq)]
 #[error("Need to implement span")]
 pub struct ParseError {
     span: Span,

@@ -6,6 +6,6 @@ mod spanned;
 
 pub use evaluating::{Eval, EvalError, EvalResult, Value};
 pub use parsing::{
-    lex, parse, Parse, ParseError, ParseErrorKind, ParseResult, Parser, Peek, Peeker,
+    tokenize, parse, Parse, ParseError, ParseErrorKind, ParseResult, Parser, Peek, Peeker,
 };
 pub(crate) use spanned::{Span, Spanned};

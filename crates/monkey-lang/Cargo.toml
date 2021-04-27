@@ -11,6 +11,7 @@ smol_str = "0.1.17"
 thiserror = "1.0.24"
 unicode-xid = "0.2.1"
 monkey-util = { path = "../monkey-util" }
+itertools = "0.10.0"
 
 [dev-dependencies]
 insta = { version = "1.6.3", features = ["glob"] }

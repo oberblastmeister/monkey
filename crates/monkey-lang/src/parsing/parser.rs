@@ -134,7 +134,6 @@ impl<'a> Parser<'a> {
             Err(e) if e.kind() == &ParseErrorKind::Eof => Ok(Token {
                 span: Span::new(0, 0),
                 kind: TokenKind::Eof,
-                text: "".into(),
             }),
             Err(e) => Err(e),
             Ok(t) => Ok(t),
@@ -148,7 +147,6 @@ impl<'a> Parser<'a> {
         } else {
             let t = Token {
                 kind: TokenKind::Eof,
-                text: "".into(),
                 span: Span::new(0, 0),
             };
             Cow::Owned(t)
@@ -187,23 +185,4 @@ impl<'a> Parser<'a> {
 
 pub fn parse<T: Parse>(input: &str) -> ParseResult<T> {
     Parser::new(input).parse::<T>()
-}
-
-#[cfg(test)]
-mod tests {
-    use std::fs;
-
-    use super::*;
-    use crate::ast;
-
-    #[test]
-    fn parser() {
-        insta::glob!("snapshot_inputs/parser/*.txt", |path| {
-            let input = fs::read_to_string(path).unwrap();
-            let suffix = path.file_stem().unwrap().to_str().unwrap();
-            insta::with_settings!({snapshot_path => "snapshots/parser", snapshot_suffix => suffix}, {
-                insta::assert_debug_snapshot!(parse::<ast::File>(&input).map(|f| f.stmts))
-            })
-        })
-    }
 }

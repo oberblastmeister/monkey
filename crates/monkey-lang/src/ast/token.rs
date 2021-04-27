@@ -1,5 +1,3 @@
-use smol_str::SmolStr;
-
 use crate::{Spanned, Span};
 use crate::ast::TokenKind;
 
@@ -7,7 +5,6 @@ use crate::ast::TokenKind;
 pub struct Token {
     pub span: Span,
     pub kind: TokenKind,
-    pub text: SmolStr,
 }
 
 impl Spanned for Token {

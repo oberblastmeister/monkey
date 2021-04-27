@@ -1,0 +1,253 @@
+---
+source: crates/monkey-lang/src/parsing/tests.rs
+expression: actual
+input_file: crates/monkey-lang/src/parsing/snapshots/parser/ok/stmt_if_else_if.mk
+
+---
+Ok(
+    File {
+        stmts: [
+            If(
+                StmtIf {
+                    if_token: IfKw {
+                        token: Token {
+                            span: Span {
+                                start: 0,
+                                end: 2,
+                            },
+                            kind: IfKw,
+                            text: "if",
+                        },
+                    },
+                    condition: Lit(
+                        Bool(
+                            LitBool {
+                                token: Token {
+                                    span: Span {
+                                        start: 3,
+                                        end: 8,
+                                    },
+                                    kind: FalseKw,
+                                    text: "false",
+                                },
+                                value: false,
+                            },
+                        ),
+                    ),
+                    block: Block {
+                        open_bracket: LBrace {
+                            token: Token {
+                                span: Span {
+                                    start: 9,
+                                    end: 10,
+                                },
+                                kind: LBrace,
+                                text: "{",
+                            },
+                        },
+                        stmts: [
+                            Let(
+                                StmtLet {
+                                    let_token: LetKw {
+                                        token: Token {
+                                            span: Span {
+                                                start: 15,
+                                                end: 18,
+                                            },
+                                            kind: LetKw,
+                                            text: "let",
+                                        },
+                                    },
+                                    ident: Ident {
+                                        token: Token {
+                                            span: Span {
+                                                start: 19,
+                                                end: 24,
+                                            },
+                                            kind: Ident,
+                                            text: "first",
+                                        },
+                                    },
+                                    eq: Eq {
+                                        token: Token {
+                                            span: Span {
+                                                start: 25,
+                                                end: 26,
+                                            },
+                                            kind: Eq,
+                                            text: "=",
+                                        },
+                                    },
+                                    expr: Lit(
+                                        Num(
+                                            LitNum {
+                                                num: Number {
+                                                    token: Token {
+                                                        span: Span {
+                                                            start: 27,
+                                                            end: 28,
+                                                        },
+                                                        kind: Number,
+                                                        text: "1",
+                                                    },
+                                                },
+                                                value: 1.0,
+                                            },
+                                        ),
+                                    ),
+                                    semi: Semicolon {
+                                        token: Token {
+                                            span: Span {
+                                                start: 28,
+                                                end: 29,
+                                            },
+                                            kind: Semicolon,
+                                            text: ";",
+                                        },
+                                    },
+                                },
+                            ),
+                        ],
+                        close_bracket: RBrace {
+                            token: Token {
+                                span: Span {
+                                    start: 30,
+                                    end: 31,
+                                },
+                                kind: RBrace,
+                                text: "}",
+                            },
+                        },
+                    },
+                    next: Some(
+                        ElseIf(
+                            ElseIfBranch {
+                                else_token: ElseKw {
+                                    token: Token {
+                                        span: Span {
+                                            start: 32,
+                                            end: 36,
+                                        },
+                                        kind: ElseKw,
+                                        text: "else",
+                                    },
+                                },
+                                if_token: IfKw {
+                                    token: Token {
+                                        span: Span {
+                                            start: 37,
+                                            end: 39,
+                                        },
+                                        kind: IfKw,
+                                        text: "if",
+                                    },
+                                },
+                                condition: Lit(
+                                    Bool(
+                                        LitBool {
+                                            token: Token {
+                                                span: Span {
+                                                    start: 40,
+                                                    end: 44,
+                                                },
+                                                kind: TrueKw,
+                                                text: "true",
+                                            },
+                                            value: true,
+                                        },
+                                    ),
+                                ),
+                                block: Block {
+                                    open_bracket: LBrace {
+                                        token: Token {
+                                            span: Span {
+                                                start: 45,
+                                                end: 46,
+                                            },
+                                            kind: LBrace,
+                                            text: "{",
+                                        },
+                                    },
+                                    stmts: [
+                                        Let(
+                                            StmtLet {
+                                                let_token: LetKw {
+                                                    token: Token {
+                                                        span: Span {
+                                                            start: 51,
+                                                            end: 54,
+                                                        },
+                                                        kind: LetKw,
+                                                        text: "let",
+                                                    },
+                                                },
+                                                ident: Ident {
+                                                    token: Token {
+                                                        span: Span {
+                                                            start: 55,
+                                                            end: 62,
+                                                        },
+                                                        kind: Ident,
+                                                        text: "another",
+                                                    },
+                                                },
+                                                eq: Eq {
+                                                    token: Token {
+                                                        span: Span {
+                                                            start: 63,
+                                                            end: 64,
+                                                        },
+                                                        kind: Eq,
+                                                        text: "=",
+                                                    },
+                                                },
+                                                expr: Lit(
+                                                    Num(
+                                                        LitNum {
+                                                            num: Number {
+                                                                token: Token {
+                                                                    span: Span {
+                                                                        start: 65,
+                                                                        end: 69,
+                                                                    },
+                                                                    kind: Number,
+                                                                    text: "1324",
+                                                                },
+                                                            },
+                                                            value: 1324.0,
+                                                        },
+                                                    ),
+                                                ),
+                                                semi: Semicolon {
+                                                    token: Token {
+                                                        span: Span {
+                                                            start: 69,
+                                                            end: 70,
+                                                        },
+                                                        kind: Semicolon,
+                                                        text: ";",
+                                                    },
+                                                },
+                                            },
+                                        ),
+                                    ],
+                                    close_bracket: RBrace {
+                                        token: Token {
+                                            span: Span {
+                                                start: 71,
+                                                end: 72,
+                                            },
+                                            kind: RBrace,
+                                            text: "}",
+                                        },
+                                    },
+                                },
+                                next: None,
+                            },
+                        ),
+                    ),
+                },
+            ),
+        ],
+    },
+)

@@ -1,0 +1,32 @@
+---
+source: crates/monkey-lang/src/parsing/tests.rs
+expression: actual
+input_file: crates/monkey-lang/src/parsing/snapshots/lexer/ok/comments.mk
+
+---
+[
+    Token {
+        span: Span {
+            start: 26,
+            end: 28,
+        },
+        kind: ShiftRight,
+        text: ">>",
+    },
+    Token {
+        span: Span {
+            start: 29,
+            end: 30,
+        },
+        kind: Eq,
+        text: "=",
+    },
+    Token {
+        span: Span {
+            start: 31,
+            end: 32,
+        },
+        kind: Semicolon,
+        text: ";",
+    },
+]

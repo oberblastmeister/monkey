@@ -20,12 +20,7 @@ struct Source<'a> {
 
 impl<'a> Source<'a> {
     fn new(input: &'a str) -> Source<'a> {
-        Source {
-            start: 0,
-            input,
-            input_len: input.len(),
-            chars: input.chars(),
-        }
+        Source { start: 0, input, input_len: input.len(), chars: input.chars() }
     }
 
     fn chars(&self) -> Chars<'a> {
@@ -86,8 +81,8 @@ impl<'a> Source<'a> {
         self.input[self.start()..self.pos()].into()
     }
 
-    fn bump(&mut self) -> (Span, SmolStr) {
-        let res = (self.span(), self.text());
+    fn bump(&mut self) -> Span {
+        let res = self.span();
         self.bump_pos();
         res
     }
@@ -118,15 +113,13 @@ pub struct Lexer<'a> {
     source: Source<'a>,
 }
 
-pub fn lex(input: &str) -> Vec<ParseResult<Token>> {
+pub fn tokenize(input: &str) -> Vec<ParseResult<Token>> {
     Lexer::new(input).lex_until_eof()
 }
 
 impl<'a> Lexer<'a> {
     pub fn new(input: &'a str) -> Lexer<'a> {
-        Lexer {
-            source: Source::new(input),
-        }
+        Lexer { source: Source::new(input) }
     }
 
     pub fn next_token(&mut self) -> ParseResult<Token> {
@@ -229,9 +222,9 @@ impl<'a> Lexer<'a> {
             }
         };
 
-        let (span, text) = self.source.bump();
+        let span = self.source.bump();
 
-        Ok(Token { span, kind, text })
+        Ok(Token { span, kind })
     }
 
     fn lex_until_eof(&mut self) -> Vec<ParseResult<Token>> {
@@ -255,7 +248,7 @@ impl<'a> Lexer<'a> {
     fn string_lit(&mut self, delimit: char) -> ParseResult<Token> {
         self.source.bump_pos(); // get rid opening "
         self.source.accept_while(|c| c != delimit);
-        let (span, text) = self.source.bump();
+        let span = self.source.bump();
         if let Some(c) = self.source.skip_next() {
             if c != delimit {
                 panic!("This  should not happen because of accept_while")
@@ -263,29 +256,20 @@ impl<'a> Lexer<'a> {
         } else {
             panic!("Could not find end of string") // fix error reporting
         }
-        Ok(Token {
-            span,
-            text,
-            kind: K![string],
-        })
+        Ok(Token { span, kind: K![string] })
     }
 
     fn number_lit(&mut self) -> ParseResult<Token> {
-        self.source
-            .accept_while(|c| ('0'..'9').contains(&c) || c == '_');
-        let (span, text) = self.source.bump();
-        Ok(Token {
-            span,
-            text,
-            kind: K![number],
-        })
+        self.source.accept_while(|c| ('0'..'9').contains(&c) || c == '_');
+        let span = self.source.bump();
+        Ok(Token { span, kind: K![number] })
     }
 
     fn maybe_ident(&mut self) -> ParseResult<Token> {
         self.source.accept_while(UnicodeXID::is_xid_continue);
-        let (span, text) = self.source.bump();
+        let span = self.source.bump();
         let kind = keyword(&text).unwrap_or(K![ident]);
-        Ok(Token { span, text, kind })
+        Ok(Token { span, kind })
     }
 }
 
@@ -339,19 +323,6 @@ pub fn is_whitespace(c: char) -> bool {
 mod tests {
     use super::*;
 
-    use std::fs;
-
-    #[test]
-    fn lexer() {
-        insta::glob!("snapshot_inputs/lexer/*.txt", |path| {
-            let input = fs::read_to_string(path).unwrap();
-            let suffix = path.file_stem().unwrap().to_str().unwrap();
-            insta::with_settings!({snapshot_path => "snapshots/lexer", snapshot_suffix => suffix}, {
-                insta::assert_debug_snapshot!(lex(&input))
-            })
-        })
-    }
-
     #[test]
     fn pos() {
         let mut lexer = Lexer::new("test");
@@ -377,8 +348,6 @@ mod tests {
 
     #[test]
     fn whitespace() {
-        assert!(Lexer::new("\t\t\n              \t\n")
-            .lex_until_eof()
-            .is_empty());
+        assert!(Lexer::new("\t\t\n              \t\n").lex_until_eof().is_empty());
     }
 }
