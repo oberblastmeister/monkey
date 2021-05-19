@@ -1,0 +1,52 @@
+---
+source: crates/monkey-lang/src/parsing/tests.rs
+expression: actual
+input_file: crates/monkey-lang/src/parsing/snapshots/lexer/ok/delimiters.mk
+
+---
+[
+    Token {
+        span: 0..1,
+        kind: LParen,
+    },
+    Token {
+        span: 1..2,
+        kind: RParen,
+    },
+    Token {
+        span: 2..3,
+        kind: LBrace,
+    },
+    Token {
+        span: 3..4,
+        kind: RBrace,
+    },
+    Token {
+        span: 4..5,
+        kind: LBracket,
+    },
+    Token {
+        span: 5..6,
+        kind: RBracket,
+    },
+    Token {
+        span: 7..8,
+        kind: RParen,
+    },
+    Token {
+        span: 8..9,
+        kind: LBrace,
+    },
+    Token {
+        span: 9..10,
+        kind: RBracket,
+    },
+    Token {
+        span: 10..11,
+        kind: RParen,
+    },
+    Token {
+        span: 11..12,
+        kind: LParen,
+    },
+]

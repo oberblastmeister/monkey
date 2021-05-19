@@ -3,7 +3,7 @@ use crate::ast;
 #[derive(Debug, Clone, PartialEq)]
 pub struct ExprPostfix {
     /// The right hand side of the expression
-    pub lhs: ast::Expr,
+    pub lhs: ast::ExprId,
     /// the token of the operator
     pub token: ast::Token,
     /// The operator type

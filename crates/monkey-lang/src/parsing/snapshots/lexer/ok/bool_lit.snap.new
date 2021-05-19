@@ -1,0 +1,24 @@
+---
+source: crates/monkey-lang/src/parsing/tests.rs
+expression: actual
+input_file: crates/monkey-lang/src/parsing/snapshots/lexer/ok/bool_lit.mk
+
+---
+[
+    Token {
+        span: 0..4,
+        kind: Ident,
+    },
+    Token {
+        span: 4..5,
+        kind: Semicolon,
+    },
+    Token {
+        span: 6..11,
+        kind: Ident,
+    },
+    Token {
+        span: 11..12,
+        kind: Semicolon,
+    },
+]

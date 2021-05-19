@@ -73,3 +73,20 @@ where
         Ok(output)
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::{Parse, parse};
+
+    #[test]
+    fn derive_parse() {
+        #[derive(Parse)]
+        struct It {
+            first: T![return],
+            second: T![let],
+        }
+
+        parse::<It>("return let").unwrap();
+    }
+}

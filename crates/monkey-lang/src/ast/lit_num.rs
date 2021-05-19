@@ -11,20 +11,21 @@ impl Parse for LitNum {
         let num: T![number] = p.parse()?;
         let token = &num.token;
 
-        let value = match token.kind {
-            K![number] => token
-                .text
-                .parse::<f64>()
-                .map_err(|e| ParseError::new(token, e.into()))?,
-            _ => {
-                return Err(ParseError::expected(
-                    &num.token,
-                    "boolean literal must be true or false",
-                ))
-            }
-        };
+        todo!()
+        // let value = match token.kind {
+        //     K![number] => token
+        //         .text
+        //         .parse::<f64>()
+        //         .map_err(|e| ParseError::new(token, e.into()))?,
+        //     _ => {
+        //         return Err(ParseError::expected(
+        //             &num.token,
+        //             "boolean literal must be true or false",
+        //         ))
+        //     }
+        // };
 
-        Ok(LitNum { value, num })
+        // Ok(LitNum { value, num })
     }
 }
 

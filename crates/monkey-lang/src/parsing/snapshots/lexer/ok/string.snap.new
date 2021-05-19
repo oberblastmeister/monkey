@@ -1,0 +1,48 @@
+---
+source: crates/monkey-lang/src/parsing/tests.rs
+expression: actual
+input_file: crates/monkey-lang/src/parsing/snapshots/lexer/ok/string.mk
+
+---
+[
+    Token {
+        span: 0..3,
+        kind: Ident,
+    },
+    Token {
+        span: 4..5,
+        kind: Ident,
+    },
+    Token {
+        span: 6..7,
+        kind: Eq,
+    },
+    Token {
+        span: 9..20,
+        kind: String,
+    },
+    Token {
+        span: 21..22,
+        kind: Semicolon,
+    },
+    Token {
+        span: 23..26,
+        kind: Ident,
+    },
+    Token {
+        span: 27..29,
+        kind: Ident,
+    },
+    Token {
+        span: 30..31,
+        kind: Eq,
+    },
+    Token {
+        span: 33..47,
+        kind: String,
+    },
+    Token {
+        span: 48..49,
+        kind: Semicolon,
+    },
+]

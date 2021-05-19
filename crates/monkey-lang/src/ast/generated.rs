@@ -145,10 +145,7 @@ impl parsing::Parse for FnKw {
         let token = p.next()?;
         match token.kind {
             TokenKind::FnKw => Ok(Self { token }),
-            _ => Err(parsing::ParseError::expected(
-                &token,
-                TokenKind::FnKw.as_str(),
-            )),
+            _ => Err(parsing::ParseError::expected(&token, TokenKind::FnKw.as_str())),
         }
     }
 }
@@ -171,10 +168,7 @@ impl parsing::Parse for LetKw {
         let token = p.next()?;
         match token.kind {
             TokenKind::LetKw => Ok(Self { token }),
-            _ => Err(parsing::ParseError::expected(
-                &token,
-                TokenKind::LetKw.as_str(),
-            )),
+            _ => Err(parsing::ParseError::expected(&token, TokenKind::LetKw.as_str())),
         }
     }
 }
@@ -197,10 +191,7 @@ impl parsing::Parse for TrueKw {
         let token = p.next()?;
         match token.kind {
             TokenKind::TrueKw => Ok(Self { token }),
-            _ => Err(parsing::ParseError::expected(
-                &token,
-                TokenKind::TrueKw.as_str(),
-            )),
+            _ => Err(parsing::ParseError::expected(&token, TokenKind::TrueKw.as_str())),
         }
     }
 }
@@ -223,10 +214,7 @@ impl parsing::Parse for FalseKw {
         let token = p.next()?;
         match token.kind {
             TokenKind::FalseKw => Ok(Self { token }),
-            _ => Err(parsing::ParseError::expected(
-                &token,
-                TokenKind::FalseKw.as_str(),
-            )),
+            _ => Err(parsing::ParseError::expected(&token, TokenKind::FalseKw.as_str())),
         }
     }
 }
@@ -249,10 +237,7 @@ impl parsing::Parse for IfKw {
         let token = p.next()?;
         match token.kind {
             TokenKind::IfKw => Ok(Self { token }),
-            _ => Err(parsing::ParseError::expected(
-                &token,
-                TokenKind::IfKw.as_str(),
-            )),
+            _ => Err(parsing::ParseError::expected(&token, TokenKind::IfKw.as_str())),
         }
     }
 }
@@ -275,10 +260,7 @@ impl parsing::Parse for ElseKw {
         let token = p.next()?;
         match token.kind {
             TokenKind::ElseKw => Ok(Self { token }),
-            _ => Err(parsing::ParseError::expected(
-                &token,
-                TokenKind::ElseKw.as_str(),
-            )),
+            _ => Err(parsing::ParseError::expected(&token, TokenKind::ElseKw.as_str())),
         }
     }
 }
@@ -301,10 +283,7 @@ impl parsing::Parse for ReturnKw {
         let token = p.next()?;
         match token.kind {
             TokenKind::ReturnKw => Ok(Self { token }),
-            _ => Err(parsing::ParseError::expected(
-                &token,
-                TokenKind::ReturnKw.as_str(),
-            )),
+            _ => Err(parsing::ParseError::expected(&token, TokenKind::ReturnKw.as_str())),
         }
     }
 }
@@ -327,10 +306,7 @@ impl parsing::Parse for Number {
         let token = p.next()?;
         match token.kind {
             TokenKind::Number => Ok(Self { token }),
-            _ => Err(parsing::ParseError::expected(
-                &token,
-                TokenKind::Number.as_str(),
-            )),
+            _ => Err(parsing::ParseError::expected(&token, TokenKind::Number.as_str())),
         }
     }
 }
@@ -348,10 +324,7 @@ impl parsing::Parse for String {
         let token = p.next()?;
         match token.kind {
             TokenKind::String => Ok(Self { token }),
-            _ => Err(parsing::ParseError::expected(
-                &token,
-                TokenKind::String.as_str(),
-            )),
+            _ => Err(parsing::ParseError::expected(&token, TokenKind::String.as_str())),
         }
     }
 }
@@ -369,10 +342,7 @@ impl parsing::Parse for EqEq {
         let token = p.next()?;
         match token.kind {
             TokenKind::EqEq => Ok(Self { token }),
-            _ => Err(parsing::ParseError::expected(
-                &token,
-                TokenKind::EqEq.as_str(),
-            )),
+            _ => Err(parsing::ParseError::expected(&token, TokenKind::EqEq.as_str())),
         }
     }
 }
@@ -395,10 +365,7 @@ impl parsing::Parse for NotEq {
         let token = p.next()?;
         match token.kind {
             TokenKind::NotEq => Ok(Self { token }),
-            _ => Err(parsing::ParseError::expected(
-                &token,
-                TokenKind::NotEq.as_str(),
-            )),
+            _ => Err(parsing::ParseError::expected(&token, TokenKind::NotEq.as_str())),
         }
     }
 }
@@ -421,10 +388,7 @@ impl parsing::Parse for LParen {
         let token = p.next()?;
         match token.kind {
             TokenKind::LParen => Ok(Self { token }),
-            _ => Err(parsing::ParseError::expected(
-                &token,
-                TokenKind::LParen.as_str(),
-            )),
+            _ => Err(parsing::ParseError::expected(&token, TokenKind::LParen.as_str())),
         }
     }
 }
@@ -447,10 +411,7 @@ impl parsing::Parse for RParen {
         let token = p.next()?;
         match token.kind {
             TokenKind::RParen => Ok(Self { token }),
-            _ => Err(parsing::ParseError::expected(
-                &token,
-                TokenKind::RParen.as_str(),
-            )),
+            _ => Err(parsing::ParseError::expected(&token, TokenKind::RParen.as_str())),
         }
     }
 }
@@ -473,10 +434,7 @@ impl parsing::Parse for LBrace {
         let token = p.next()?;
         match token.kind {
             TokenKind::LBrace => Ok(Self { token }),
-            _ => Err(parsing::ParseError::expected(
-                &token,
-                TokenKind::LBrace.as_str(),
-            )),
+            _ => Err(parsing::ParseError::expected(&token, TokenKind::LBrace.as_str())),
         }
     }
 }
@@ -499,10 +457,7 @@ impl parsing::Parse for RBrace {
         let token = p.next()?;
         match token.kind {
             TokenKind::RBrace => Ok(Self { token }),
-            _ => Err(parsing::ParseError::expected(
-                &token,
-                TokenKind::RBrace.as_str(),
-            )),
+            _ => Err(parsing::ParseError::expected(&token, TokenKind::RBrace.as_str())),
         }
     }
 }
@@ -525,10 +480,7 @@ impl parsing::Parse for LBracket {
         let token = p.next()?;
         match token.kind {
             TokenKind::LBracket => Ok(Self { token }),
-            _ => Err(parsing::ParseError::expected(
-                &token,
-                TokenKind::LBracket.as_str(),
-            )),
+            _ => Err(parsing::ParseError::expected(&token, TokenKind::LBracket.as_str())),
         }
     }
 }
@@ -551,10 +503,7 @@ impl parsing::Parse for RBracket {
         let token = p.next()?;
         match token.kind {
             TokenKind::RBracket => Ok(Self { token }),
-            _ => Err(parsing::ParseError::expected(
-                &token,
-                TokenKind::RBracket.as_str(),
-            )),
+            _ => Err(parsing::ParseError::expected(&token, TokenKind::RBracket.as_str())),
         }
     }
 }
@@ -577,10 +526,7 @@ impl parsing::Parse for Colon {
         let token = p.next()?;
         match token.kind {
             TokenKind::Colon => Ok(Self { token }),
-            _ => Err(parsing::ParseError::expected(
-                &token,
-                TokenKind::Colon.as_str(),
-            )),
+            _ => Err(parsing::ParseError::expected(&token, TokenKind::Colon.as_str())),
         }
     }
 }
@@ -603,10 +549,7 @@ impl parsing::Parse for Eq {
         let token = p.next()?;
         match token.kind {
             TokenKind::Eq => Ok(Self { token }),
-            _ => Err(parsing::ParseError::expected(
-                &token,
-                TokenKind::Eq.as_str(),
-            )),
+            _ => Err(parsing::ParseError::expected(&token, TokenKind::Eq.as_str())),
         }
     }
 }
@@ -629,10 +572,7 @@ impl parsing::Parse for Walrus {
         let token = p.next()?;
         match token.kind {
             TokenKind::Walrus => Ok(Self { token }),
-            _ => Err(parsing::ParseError::expected(
-                &token,
-                TokenKind::Walrus.as_str(),
-            )),
+            _ => Err(parsing::ParseError::expected(&token, TokenKind::Walrus.as_str())),
         }
     }
 }
@@ -655,10 +595,7 @@ impl parsing::Parse for Comma {
         let token = p.next()?;
         match token.kind {
             TokenKind::Comma => Ok(Self { token }),
-            _ => Err(parsing::ParseError::expected(
-                &token,
-                TokenKind::Comma.as_str(),
-            )),
+            _ => Err(parsing::ParseError::expected(&token, TokenKind::Comma.as_str())),
         }
     }
 }
@@ -681,10 +618,7 @@ impl parsing::Parse for Dot {
         let token = p.next()?;
         match token.kind {
             TokenKind::Dot => Ok(Self { token }),
-            _ => Err(parsing::ParseError::expected(
-                &token,
-                TokenKind::Dot.as_str(),
-            )),
+            _ => Err(parsing::ParseError::expected(&token, TokenKind::Dot.as_str())),
         }
     }
 }
@@ -707,10 +641,7 @@ impl parsing::Parse for Semicolon {
         let token = p.next()?;
         match token.kind {
             TokenKind::Semicolon => Ok(Self { token }),
-            _ => Err(parsing::ParseError::expected(
-                &token,
-                TokenKind::Semicolon.as_str(),
-            )),
+            _ => Err(parsing::ParseError::expected(&token, TokenKind::Semicolon.as_str())),
         }
     }
 }
@@ -733,10 +664,7 @@ impl parsing::Parse for Plus {
         let token = p.next()?;
         match token.kind {
             TokenKind::Plus => Ok(Self { token }),
-            _ => Err(parsing::ParseError::expected(
-                &token,
-                TokenKind::Plus.as_str(),
-            )),
+            _ => Err(parsing::ParseError::expected(&token, TokenKind::Plus.as_str())),
         }
     }
 }
@@ -759,10 +687,7 @@ impl parsing::Parse for Minus {
         let token = p.next()?;
         match token.kind {
             TokenKind::Minus => Ok(Self { token }),
-            _ => Err(parsing::ParseError::expected(
-                &token,
-                TokenKind::Minus.as_str(),
-            )),
+            _ => Err(parsing::ParseError::expected(&token, TokenKind::Minus.as_str())),
         }
     }
 }
@@ -785,10 +710,7 @@ impl parsing::Parse for Asterisk {
         let token = p.next()?;
         match token.kind {
             TokenKind::Asterisk => Ok(Self { token }),
-            _ => Err(parsing::ParseError::expected(
-                &token,
-                TokenKind::Asterisk.as_str(),
-            )),
+            _ => Err(parsing::ParseError::expected(&token, TokenKind::Asterisk.as_str())),
         }
     }
 }
@@ -811,10 +733,7 @@ impl parsing::Parse for Slash {
         let token = p.next()?;
         match token.kind {
             TokenKind::Slash => Ok(Self { token }),
-            _ => Err(parsing::ParseError::expected(
-                &token,
-                TokenKind::Slash.as_str(),
-            )),
+            _ => Err(parsing::ParseError::expected(&token, TokenKind::Slash.as_str())),
         }
     }
 }
@@ -837,10 +756,7 @@ impl parsing::Parse for Modulo {
         let token = p.next()?;
         match token.kind {
             TokenKind::Modulo => Ok(Self { token }),
-            _ => Err(parsing::ParseError::expected(
-                &token,
-                TokenKind::Modulo.as_str(),
-            )),
+            _ => Err(parsing::ParseError::expected(&token, TokenKind::Modulo.as_str())),
         }
     }
 }
@@ -863,10 +779,7 @@ impl parsing::Parse for Caret {
         let token = p.next()?;
         match token.kind {
             TokenKind::Caret => Ok(Self { token }),
-            _ => Err(parsing::ParseError::expected(
-                &token,
-                TokenKind::Caret.as_str(),
-            )),
+            _ => Err(parsing::ParseError::expected(&token, TokenKind::Caret.as_str())),
         }
     }
 }
@@ -889,10 +802,7 @@ impl parsing::Parse for ShiftLeft {
         let token = p.next()?;
         match token.kind {
             TokenKind::ShiftLeft => Ok(Self { token }),
-            _ => Err(parsing::ParseError::expected(
-                &token,
-                TokenKind::ShiftLeft.as_str(),
-            )),
+            _ => Err(parsing::ParseError::expected(&token, TokenKind::ShiftLeft.as_str())),
         }
     }
 }
@@ -915,10 +825,7 @@ impl parsing::Parse for ShiftRight {
         let token = p.next()?;
         match token.kind {
             TokenKind::ShiftRight => Ok(Self { token }),
-            _ => Err(parsing::ParseError::expected(
-                &token,
-                TokenKind::ShiftRight.as_str(),
-            )),
+            _ => Err(parsing::ParseError::expected(&token, TokenKind::ShiftRight.as_str())),
         }
     }
 }
@@ -941,10 +848,7 @@ impl parsing::Parse for Tilde {
         let token = p.next()?;
         match token.kind {
             TokenKind::Tilde => Ok(Self { token }),
-            _ => Err(parsing::ParseError::expected(
-                &token,
-                TokenKind::Tilde.as_str(),
-            )),
+            _ => Err(parsing::ParseError::expected(&token, TokenKind::Tilde.as_str())),
         }
     }
 }
@@ -967,10 +871,7 @@ impl parsing::Parse for BitAnd {
         let token = p.next()?;
         match token.kind {
             TokenKind::BitAnd => Ok(Self { token }),
-            _ => Err(parsing::ParseError::expected(
-                &token,
-                TokenKind::BitAnd.as_str(),
-            )),
+            _ => Err(parsing::ParseError::expected(&token, TokenKind::BitAnd.as_str())),
         }
     }
 }
@@ -993,10 +894,7 @@ impl parsing::Parse for BitOr {
         let token = p.next()?;
         match token.kind {
             TokenKind::BitOr => Ok(Self { token }),
-            _ => Err(parsing::ParseError::expected(
-                &token,
-                TokenKind::BitOr.as_str(),
-            )),
+            _ => Err(parsing::ParseError::expected(&token, TokenKind::BitOr.as_str())),
         }
     }
 }
@@ -1019,10 +917,7 @@ impl parsing::Parse for Lt {
         let token = p.next()?;
         match token.kind {
             TokenKind::Lt => Ok(Self { token }),
-            _ => Err(parsing::ParseError::expected(
-                &token,
-                TokenKind::Lt.as_str(),
-            )),
+            _ => Err(parsing::ParseError::expected(&token, TokenKind::Lt.as_str())),
         }
     }
 }
@@ -1045,10 +940,7 @@ impl parsing::Parse for Gt {
         let token = p.next()?;
         match token.kind {
             TokenKind::Gt => Ok(Self { token }),
-            _ => Err(parsing::ParseError::expected(
-                &token,
-                TokenKind::Gt.as_str(),
-            )),
+            _ => Err(parsing::ParseError::expected(&token, TokenKind::Gt.as_str())),
         }
     }
 }
@@ -1071,10 +963,7 @@ impl parsing::Parse for LtEq {
         let token = p.next()?;
         match token.kind {
             TokenKind::LtEq => Ok(Self { token }),
-            _ => Err(parsing::ParseError::expected(
-                &token,
-                TokenKind::LtEq.as_str(),
-            )),
+            _ => Err(parsing::ParseError::expected(&token, TokenKind::LtEq.as_str())),
         }
     }
 }
@@ -1097,10 +986,7 @@ impl parsing::Parse for GtEq {
         let token = p.next()?;
         match token.kind {
             TokenKind::GtEq => Ok(Self { token }),
-            _ => Err(parsing::ParseError::expected(
-                &token,
-                TokenKind::GtEq.as_str(),
-            )),
+            _ => Err(parsing::ParseError::expected(&token, TokenKind::GtEq.as_str())),
         }
     }
 }
@@ -1123,10 +1009,7 @@ impl parsing::Parse for LogicalAnd {
         let token = p.next()?;
         match token.kind {
             TokenKind::LogicalAnd => Ok(Self { token }),
-            _ => Err(parsing::ParseError::expected(
-                &token,
-                TokenKind::LogicalAnd.as_str(),
-            )),
+            _ => Err(parsing::ParseError::expected(&token, TokenKind::LogicalAnd.as_str())),
         }
     }
 }
@@ -1149,10 +1032,7 @@ impl parsing::Parse for LogicalOr {
         let token = p.next()?;
         match token.kind {
             TokenKind::LogicalOr => Ok(Self { token }),
-            _ => Err(parsing::ParseError::expected(
-                &token,
-                TokenKind::LogicalOr.as_str(),
-            )),
+            _ => Err(parsing::ParseError::expected(&token, TokenKind::LogicalOr.as_str())),
         }
     }
 }
@@ -1175,10 +1055,7 @@ impl parsing::Parse for Bang {
         let token = p.next()?;
         match token.kind {
             TokenKind::Bang => Ok(Self { token }),
-            _ => Err(parsing::ParseError::expected(
-                &token,
-                TokenKind::Bang.as_str(),
-            )),
+            _ => Err(parsing::ParseError::expected(&token, TokenKind::Bang.as_str())),
         }
     }
 }
@@ -1201,10 +1078,7 @@ impl parsing::Parse for Ident {
         let token = p.next()?;
         match token.kind {
             TokenKind::Ident => Ok(Self { token }),
-            _ => Err(parsing::ParseError::expected(
-                &token,
-                TokenKind::Ident.as_str(),
-            )),
+            _ => Err(parsing::ParseError::expected(&token, TokenKind::Ident.as_str())),
         }
     }
 }

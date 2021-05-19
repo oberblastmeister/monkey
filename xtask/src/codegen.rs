@@ -1,10 +1,10 @@
-use std::{ops::Deref, path::Path};
+use std::{ops::Deref, path::Path, slice, vec};
 
 use eyre::Result;
 use heck::{CamelCase, SnakeCase};
 use proc_macro2::{Punct, Spacing, TokenStream};
-use quote::quote;
 use quote::format_ident;
+use quote::quote;
 use syn::Ident;
 use xshell::{cmd, read_file, write_file};
 
@@ -14,30 +14,27 @@ use crate::{
 };
 
 impl TokenDefs {
+    fn lower(&self) -> TokenGens {
+        TokenGens(self.tokens.iter().map(|v| v.lower()).collect::<Vec<_>>())
+    }
+
     fn gen_defs(&self) -> TokenStream {
-        let token_gens = self
-            .tokens
-            .iter()
-            .map(|v| v.get_token_gen())
-            .collect::<Vec<_>>();
+        let token_gens = self.lower();
 
-        let tts: Vec<_> = token_gens.iter().map(|gen| &gen.tt).collect();
+        let keyword_token_gens =
+            token_gens.iter().filter(|gen| gen.ttype == TokenType::Keyword).collect::<Vec<_>>();
 
-        let docs: Vec<_> = token_gens.iter().map(|gen| &gen.doc).collect();
+        let tts = token_gens.tts();
 
-        let variants: Vec<_> = token_gens
-            .iter()
-            .map(|gen| {
-                let variant = &gen.variant;
-                quote! { #variant }
-            })
-            .collect();
+        let docs = token_gens.docs();
 
-        let terminals: Vec<_> = token_gens.iter().map(|gen| gen.gen_terminal()).collect();
+        let variants = token_gens.variants();
+
+        let terminals = token_gens.gen_terminals();
 
         let imports = TokenDefs::imports();
 
-        let as_str_fn = TokenDefs::gen_as_str(&token_gens);
+        let as_str_fn = token_gens.gen_as_str();
 
         let token_stream = quote! {
             #imports
@@ -83,11 +80,90 @@ impl TokenDefs {
         token_stream
     }
 
-    fn gen_as_str(token_gens: &[TokenGen]) -> TokenStream {
-        let arms = token_gens.iter().map(|TokenGen { text, variant, .. }| {
-            let text = text
-                .clone()
-                .unwrap_or_else(|| variant.to_string().to_snake_case());
+    fn imports() -> TokenStream {
+        quote! {
+            use crate::parsing;
+            use super::Token;
+            use std::fmt;
+        }
+    }
+}
+
+impl TokenDef {
+    fn lower(&self) -> TokenGen {
+        let doc = self.doc.clone().map(|s| quote! { #[doc = #s] });
+
+        match self.ttype {
+            TokenType::Keyword => {
+                let text = self.text.clone().unwrap();
+                let tt = format_ident!("{}", &text);
+                let variant_s =
+                    self.variant.clone().unwrap_or_else(|| format!("{}Kw", text.to_camel_case()));
+                let variant = format_ident!("{}", variant_s);
+                TokenGen { text: Some(text), tt: quote! { #tt }, variant, doc, ttype: self.ttype }
+            }
+            TokenType::Literal => {
+                let tt = format_ident!("{}", self.variant.as_ref().unwrap().to_snake_case());
+                let variant = format_ident!("{}", self.variant.as_ref().unwrap());
+                TokenGen { text: None, tt: quote! { #tt }, variant, doc, ttype: self.ttype }
+            }
+            TokenType::Punct => {
+                let text = self.text.clone().unwrap();
+                let tt = if "{}[]()".contains(&text) {
+                    let c = text.chars().next().unwrap();
+                    quote! { #c }
+                } else {
+                    let cs = text.chars().map(|c| Punct::new(c, Spacing::Joint));
+                    quote! { #(#cs)* }
+                };
+                let variant = format_ident!("{}", self.variant.as_ref().unwrap());
+                TokenGen { text: Some(text), tt, variant, doc, ttype: self.ttype }
+            }
+            TokenType::Token => {
+                if self.text.as_ref().is_some() {
+                    panic!("This token tokendefs cannot have text: {:?}", self);
+                }
+
+                let tt = format_ident!("{}", self.variant.as_ref().unwrap().to_snake_case());
+                let variant = format_ident!("{}", self.variant.as_ref().unwrap());
+
+                TokenGen { text: None, tt: quote! { #tt }, variant, doc, ttype: self.ttype }
+            }
+        }
+    }
+}
+
+struct TokenGens(Vec<TokenGen>);
+
+impl TokenGens {
+    fn iter(&self) -> slice::Iter<TokenGen> {
+        self.0.iter()
+    }
+
+    fn tts(&self) -> Vec<&TokenStream> {
+        self.iter().map(|gen| &gen.tt).collect()
+    }
+
+    fn docs(&self) -> Vec<Option<&TokenStream>> {
+        self.iter().map(|gen| gen.doc.as_ref()).collect()
+    }
+
+    fn variants(&self) -> Vec<TokenStream> {
+        self.iter()
+            .map(|gen| {
+                let variant = &gen.variant;
+                quote! { #variant }
+            })
+            .collect()
+    }
+
+    fn gen_terminals(&self) -> Vec<TokenStream> {
+        self.iter().map(|gen| gen.gen_terminal()).collect()
+    }
+
+    fn gen_as_str(&self) -> TokenStream {
+        let arms = self.iter().map(|TokenGen { text, variant, .. }| {
+            let text = text.clone().unwrap_or_else(|| variant.to_string().to_snake_case());
 
             quote! {
                 Self::#variant => #text
@@ -105,83 +181,10 @@ impl TokenDefs {
             }
         }
     }
-
-    fn imports() -> TokenStream {
-        quote! {
-            use crate::parsing;
-            use super::Token;
-            use std::fmt;
-        }
-    }
-}
-
-impl TokenDef {
-    fn get_token_gen(&self) -> TokenGen {
-        let doc = self.doc.clone().map(|s| quote! { #[doc = #s] });
-
-        match self.ttype {
-            TokenType::Keyword => {
-                let text = self.text.clone().unwrap();
-                let tt = format_ident!("{}", &text);
-                let variant_s = self
-                    .variant
-                    .clone()
-                    .unwrap_or_else(|| format!("{}Kw", text.to_camel_case()));
-                let variant = format_ident!("{}", variant_s);
-                TokenGen {
-                    text: Some(text),
-                    tt: quote! { #tt },
-                    variant,
-                    doc,
-                }
-            }
-            TokenType::Literal => {
-                let tt = format_ident!("{}", self.variant.as_ref().unwrap().to_snake_case());
-                let variant = format_ident!("{}", self.variant.as_ref().unwrap());
-                TokenGen {
-                    text: None,
-                    tt: quote! { #tt },
-                    variant,
-                    doc,
-                }
-            }
-            TokenType::Punct => {
-                let text = self.text.clone().unwrap();
-                let tt = if "{}[]()".contains(&text) {
-                    let c = text.chars().next().unwrap();
-                    quote! { #c }
-                } else {
-                    let cs = text.chars().map(|c| Punct::new(c, Spacing::Joint));
-                    quote! { #(#cs)* }
-                };
-                let variant = format_ident!("{}", self.variant.as_ref().unwrap());
-                TokenGen {
-                    text: Some(text),
-                    tt,
-                    variant,
-                    doc,
-                }
-            }
-            TokenType::Token => {
-                if self.text.as_ref().is_some() {
-                    panic!("This token tokendefs cannot have text: {:?}", self);
-                }
-
-                let tt = format_ident!("{}", self.variant.as_ref().unwrap().to_snake_case());
-                let variant = format_ident!("{}", self.variant.as_ref().unwrap());
-
-                TokenGen {
-                    text: None,
-                    tt: quote! { #tt },
-                    variant,
-                    doc,
-                }
-            }
-        }
-    }
 }
 
 struct TokenGen {
+    ttype: TokenType,
     text: Option<String>,
     tt: TokenStream,
     doc: Option<TokenStream>,

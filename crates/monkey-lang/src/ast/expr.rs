@@ -3,12 +3,12 @@ use monkey_util::{Precedence, PrecedenceType};
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum Expr {
-    Infix(Box<ast::ExprInfix>),
-    Prefix(Box<ast::ExprPrefix>),
-    Postfix(Box<ast::ExprPostfix>),
-    Lit(Box<ast::Lit>),
-    Named(Box<T![ident]>),
-    Call(Box<ast::ExprCall>),
+    Infix(ast::ExprInfix),
+    Prefix(ast::ExprPrefix),
+    Postfix(ast::ExprPostfix),
+    Lit(ast::Lit),
+    Named(T![ident]),
+    Call(ast::ExprCall),
 }
 
 impl Parse for Expr {
@@ -18,7 +18,7 @@ impl Parse for Expr {
 }
 
 impl Expr {
-    fn parse_binding_power(p: &mut Parser, min_bp: Precedence) -> ParseResult<Expr> {
+    fn parse_binding_power(p: &mut Parser, min_bp: Precedence) -> ParseResult<ast::Expr> {
         let mut lhs = Expr::parse_lhs(p)?;
 
         loop {
@@ -39,7 +39,8 @@ impl Expr {
 
                     let token = p.next()?;
 
-                    lhs = Expr::parse_infix(p, r_bp, token, op, lhs)?;
+                    let expr_id = p.alloc_expr(lhs);
+                    lhs = Expr::parse_infix(p, r_bp, token, op, expr_id)?;
                 }
                 _ => {
                     return Err(ParseError::expected(
@@ -58,6 +59,7 @@ impl Expr {
     fn parse_lhs(p: &mut Parser) -> ParseResult<Expr> {
         Ok(match p.nth(0)? {
             K!['('] => Expr::parse_paren(p)?,
+            // TODO: fix
             K![ident] => Expr::parse_ident(p)?,
             _ if p.peek::<ast::Lit>() => Expr::Lit(p.parse()?),
             k => {
@@ -84,7 +86,7 @@ impl Expr {
         })
     }
 
-    fn parse_paren(p: &mut Parser) -> ParseResult<Expr> {
+    fn parse_paren(p: &mut Parser) -> ParseResult<ast::Expr> {
         assert_eq!(p.nth(0).unwrap(), K!['(']);
 
         p.next().unwrap();
@@ -100,7 +102,7 @@ impl Expr {
         token: ast::Token,
     ) -> ParseResult<Expr> {
         let rhs = Expr::parse_binding_power(p, r_bp)?;
-        let expr = Expr::Prefix(Box::new(ast::ExprPrefix { op, token, rhs }));
+        let expr = Expr::Prefix(ast::ExprPrefix { op, token, rhs: p.alloc_expr(rhs) });
         Ok(expr)
     }
 
@@ -109,16 +111,11 @@ impl Expr {
         r_bp: Precedence,
         token: ast::Token,
         op: ast::Op,
-        lhs: Expr,
+        lhs: ast::ExprId,
     ) -> ParseResult<Expr> {
         let rhs = Expr::parse_binding_power(p, r_bp)?;
 
-        Ok(Expr::Infix(Box::new(ast::ExprInfix {
-            lhs,
-            op,
-            rhs,
-            token,
-        })))
+        Ok(Expr::Infix(ast::ExprInfix { lhs, op, rhs: p.alloc_expr(rhs), token }))
     }
 }
 
@@ -126,9 +123,6 @@ struct ExprEnd;
 
 impl Peek for ExprEnd {
     fn peek(p: &mut Peeker) -> bool {
-        matches!(
-            p.nth(0),
-            K![eof] | K![;] | K![')'] | K!['{'] | K![,] | K![']']
-        )
+        matches!(p.nth(0), K![eof] | K![;] | K![')'] | K!['{'] | K![,] | K![']'])
     }
 }

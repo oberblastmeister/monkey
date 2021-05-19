@@ -7,7 +7,7 @@ pub struct ExprPrefix {
     /// The operator type
     pub op: ast::Op,
     /// The right hand side of the expression
-    pub rhs: ast::Expr,
+    pub rhs: ast::ExprId,
 }
 
 expr_parse!(Prefix, ExprPrefix, "prefix expression");

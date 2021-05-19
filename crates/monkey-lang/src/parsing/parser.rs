@@ -1,16 +1,18 @@
+use core::fmt;
 use std::{borrow::Cow, collections::VecDeque};
 
+use la_arena::Arena;
+
 use super::{Lexer, Parse, ParseError, ParseErrorKind, ParseResult, Peek};
-use crate::ast::{Token, TokenKind};
+use crate::ast::{self, Token, TokenKind};
 use crate::Span;
+use crate::ShrinkToFit;
 
 /// Construct used to peek a parser.
 #[derive(Debug)]
 pub struct Peeker<'a> {
     pub(crate) lexer: Lexer<'a>,
-
     buf: VecDeque<Token>,
-
     last: Option<Span>,
 }
 
@@ -63,14 +65,12 @@ impl<'a> Peeker<'a> {
 pub struct Parser<'a> {
     peeker: Peeker<'a>,
     errors: Vec<ParseError>,
+    ast_arena: ast::Arena,
 }
 
 impl<'a> Parser<'a> {
     pub fn new(input: &'a str) -> Self {
-        Parser {
-            peeker: Peeker::new(input),
-            errors: Vec::new(),
-        }
+        Parser { peeker: Peeker::new(input), errors: Vec::new(), ast_arena: ast::Arena::default() }
     }
 
     #[inline]
@@ -131,10 +131,9 @@ impl<'a> Parser<'a> {
         }
 
         match self.peeker.lexer.next_token() {
-            Err(e) if e.kind() == &ParseErrorKind::Eof => Ok(Token {
-                span: Span::new(0, 0),
-                kind: TokenKind::Eof,
-            }),
+            Err(e) if e.kind() == &ParseErrorKind::Eof => {
+                Ok(Token { span: Span::new(0.into(), 0.into()), kind: TokenKind::Eof })
+            }
             Err(e) => Err(e),
             Ok(t) => Ok(t),
         }
@@ -145,10 +144,7 @@ impl<'a> Parser<'a> {
         Ok(if let Some(t) = self.peeker.at(n)? {
             Cow::Borrowed(t)
         } else {
-            let t = Token {
-                kind: TokenKind::Eof,
-                span: Span::new(0, 0),
-            };
+            let t = Token { kind: TokenKind::Eof, span: Span::new(0.into(), 0.into()) };
             Cow::Owned(t)
         })
     }
@@ -173,13 +169,19 @@ impl<'a> Parser<'a> {
         if let Some(token) = self.peeker.at(0)? {
             return Err(ParseError::new(
                 token,
-                ParseErrorKind::ExpectedEof {
-                    actual: token.kind.as_str(),
-                },
+                ParseErrorKind::ExpectedEof { actual: token.kind.as_str() },
             ));
         }
 
         Ok(())
+    }
+
+    pub fn alloc_stmt(&mut self, stmt: ast::Stmt) -> ast::StmtId {
+        self.ast_arena.stmts.alloc(stmt)
+    }
+
+    pub fn alloc_expr(&mut self, expr: ast::Expr) -> ast::ExprId {
+        self.ast_arena.exprs.alloc(expr)
     }
 }
 

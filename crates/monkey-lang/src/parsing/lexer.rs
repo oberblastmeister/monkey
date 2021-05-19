@@ -3,35 +3,38 @@
 #![allow(clippy::unnecessary_wraps)]
 
 use smol_str::SmolStr;
+use text_size::{TextRange, TextSize};
 use unicode_xid::UnicodeXID;
 
 use super::{ParseError, ParseErrorKind, ParseResult, ToEof};
 use crate::ast::{Token, TokenKind};
 use crate::{Span, Spanned};
-use std::str::Chars;
+use std::convert::TryFrom;
+use std::u32;
+use std::{convert::TryInto, str::Chars};
 
 #[derive(Debug)]
 struct Source<'a> {
-    start: usize,
-    input_len: usize,
+    start: u32,
+    input_len: u32,
     input: &'a str,
     chars: Chars<'a>,
 }
 
 impl<'a> Source<'a> {
     fn new(input: &'a str) -> Source<'a> {
-        Source { start: 0, input, input_len: input.len(), chars: input.chars() }
+        Source { start: 0, input, input_len: input.len().try_into().unwrap(), chars: input.chars() }
     }
 
     fn chars(&self) -> Chars<'a> {
         self.chars.clone()
     }
 
-    fn chars_len(&self) -> usize {
-        self.chars.as_str().len()
+    fn chars_len(&self) -> u32 {
+        self.chars.as_str().len().try_into().unwrap()
     }
 
-    fn start(&self) -> usize {
+    fn start(&self) -> u32 {
         self.start
     }
 
@@ -56,8 +59,8 @@ impl<'a> Source<'a> {
     }
 
     /// Returns the amount of bytes consumed by the lexer
-    fn pos(&self) -> usize {
-        self.input_len - self.chars_len()
+    fn pos(&self) -> u32 {
+        (self.input_len - self.chars_len()).try_into().unwrap()
     }
 
     fn peek(&self) -> Option<char> {
@@ -78,7 +81,7 @@ impl<'a> Source<'a> {
     }
 
     fn text(&mut self) -> SmolStr {
-        self.input[self.start()..self.pos()].into()
+        self.input[TextRange::new(self.start().into(), self.pos().into())].into()
     }
 
     fn bump(&mut self) -> Span {
@@ -96,7 +99,7 @@ impl<'a> Source<'a> {
 
 impl Spanned for Source<'_> {
     fn span(&self) -> Span {
-        Span::new(self.start(), self.pos())
+        Span::new(self.start().into(), self.pos().into())
     }
 }
 
@@ -268,7 +271,8 @@ impl<'a> Lexer<'a> {
     fn maybe_ident(&mut self) -> ParseResult<Token> {
         self.source.accept_while(UnicodeXID::is_xid_continue);
         let span = self.source.bump();
-        let kind = keyword(&text).unwrap_or(K![ident]);
+        // let kind = keyword(&text).unwrap_or(K![ident]);
+        let kind = K![ident];
         Ok(Token { span, kind })
     }
 }

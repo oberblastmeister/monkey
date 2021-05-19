@@ -1,0 +1,44 @@
+---
+source: crates/monkey-lang/src/parsing/tests.rs
+expression: actual
+input_file: crates/monkey-lang/src/parsing/snapshots/lexer/ok/operators.mk
+
+---
+[
+    Token {
+        span: 0..1,
+        kind: Asterisk,
+    },
+    Token {
+        span: 2..3,
+        kind: Modulo,
+    },
+    Token {
+        span: 4..5,
+        kind: Plus,
+    },
+    Token {
+        span: 6..7,
+        kind: Minus,
+    },
+    Token {
+        span: 8..9,
+        kind: Tilde,
+    },
+    Token {
+        span: 10..11,
+        kind: Gt,
+    },
+    Token {
+        span: 12..13,
+        kind: Lt,
+    },
+    Token {
+        span: 14..15,
+        kind: Bang,
+    },
+    Token {
+        span: 16..18,
+        kind: Slash,
+    },
+]

@@ -5,7 +5,7 @@ pub enum Lit {
     Bool(ast::LitBool),
     Num(ast::LitNum),
     Str(ast::LitStr),
-    Fn(Box<ast::LitFn>),
+    Fn(ast::LitFn),
 }
 
 impl Parse for Lit {

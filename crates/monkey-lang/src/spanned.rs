@@ -1,17 +1,6 @@
-/// A span corresponding to a range in the source file being parsed.
-#[derive(Debug, Default, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
-pub struct Span {
-    /// The start of the span in bytes.
-    pub start: usize,
-    /// The end of the span in bytes.
-    pub end: usize,
-}
+use text_size::TextRange;
 
-impl Span {
-    pub fn new(start: usize, end: usize) -> Span {
-        Span { start, end }
-    }
-}
+pub type Span = TextRange;
 
 /// Types for which we can get a span.
 pub trait Spanned {
@@ -22,5 +11,25 @@ pub trait Spanned {
 impl Spanned for Span {
     fn span(&self) -> Span {
         *self
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::Spanned;
+
+    #[test]
+    fn derive_spanned() {
+        #[derive(Spanned)]
+        struct It {
+            first: Span,
+            second: Span,
+        }
+
+        let it =
+            It { first: Span::new(0.into(), 3.into()), second: Span::new(10.into(), 15.into()) };
+
+        assert_eq!(it.span(), Span::new(0.into(), 15.into()));
     }
 }

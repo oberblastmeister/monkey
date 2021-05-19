@@ -3,7 +3,7 @@ use crate::{Parse, ParseResult, Parser, ast};
 #[derive(Debug, Clone, PartialEq)]
 pub struct StmtReturn {
     return_token: T![return],
-    expr: ast::Expr,
+    expr: ast::ExprId,
     semi: T![;],
 }
 

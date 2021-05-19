@@ -2,7 +2,7 @@ use crate::{ast, Parse, ParseResult, Parser};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct StmtExpr {
-    pub expr: ast::Expr,
+    pub expr: ast::ExprId,
     pub semi: T![;],
 }
 

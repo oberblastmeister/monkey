@@ -3,7 +3,7 @@ use crate::{ast, Parse, ParseResult, Parser, Peek, Peeker};
 #[derive(Debug, Clone, PartialEq)]
 pub struct StmtIf {
     if_token: T![if],
-    condition: ast::Expr,
+    condition: ast::ExprId,
     block: ast::Block,
     next: Option<IfBranch>,
 }
@@ -46,7 +46,7 @@ impl Peek for IfBranch {
 pub struct ElseIfBranch {
     else_token: T![else],
     if_token: T![if],
-    condition: ast::Expr,
+    condition: ast::ExprId,
     block: ast::Block,
     next: Option<IfBranch>,
 }

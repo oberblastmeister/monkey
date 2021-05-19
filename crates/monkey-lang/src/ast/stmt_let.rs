@@ -5,7 +5,7 @@ pub struct StmtLet {
     let_token: T![let],
     ident: T![ident],
     eq: T![=],
-    expr: ast::Expr,
+    expr: ast::ExprId,
     semi: T![;],
 }
 
